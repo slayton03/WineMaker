@@ -20,34 +20,44 @@ class App(customtkinter.CTk):
         self.grid_rowconfigure((0, 1, 2), weight=1)
 
         # create sidebar frame with widgets-----------------------------------------------------------------------------
-        #Create Sidebar frame
+        # Create Sidebar frame
         self.sidebar_frame = customtkinter.CTkFrame(self, width=140, corner_radius=0)
         self.sidebar_frame.grid(row=0, column=0, rowspan=4, sticky="nsew")
-        self.sidebar_frame.grid_rowconfigure(4, weight=1)
-        #Create main label
+        self.sidebar_frame.grid_rowconfigure(6, weight=1)
+        # Create main label
         self.logo_label = customtkinter.CTkLabel(self.sidebar_frame, text="WineMaker", font=customtkinter.CTkFont(size=20, weight="bold"))
         self.logo_label.grid(row=0, column=0, padx=20, pady=(20, 10))
-        #Create Home button
-        self.homebtn = customtkinter.CTkButton(self.sidebar_frame, command=self.sidebar_button_event)
-        self.homebtn.grid(row=1, column=0, padx=20, pady=10)
-        self.homebtn.configure(text="Home")
-        #Create Wines button
-        self.winesbtn = customtkinter.CTkButton(self.sidebar_frame, command=self.sidebar_button_event)
-        self.winesbtn.grid(row=2, column=0, padx=20, pady=10)
-        self.winesbtn.configure(text="Wines")
+        # Create Home button
+        self.home_btn = customtkinter.CTkButton(self.sidebar_frame, command=self.sidebar_button_event)
+        self.home_btn.grid(row=1, column=0, padx=20, pady=10)
+        self.home_btn.configure(text="Home")
+        # Create Wines button
+        self.wines_btn = customtkinter.CTkButton(self.sidebar_frame, command=self.sidebar_button_event)
+        self.wines_btn.grid(row=2, column=0, padx=20, pady=10)
+        self.wines_btn.configure(text="Wines")
+        # Create Calculations button
+        self.calc_btn = customtkinter.CTkButton(self.sidebar_frame, command=self.sidebar_button_event)
+        self.calc_btn.grid(row=3, column=0, padx=20, pady=10)
+        self.calc_btn.configure(text="Calculations")
+        # Create Schedule button
+        self.sch_btn = customtkinter.CTkButton(self.sidebar_frame, command=self.sidebar_button_event)
+        self.sch_btn.grid(row=4, column=0, padx=20, pady=10)
+        self.sch_btn.configure(text="Schedule")
+        # Create Notes button
+        self.note_btn = customtkinter.CTkButton(self.sidebar_frame, command=self.sidebar_button_event)
+        self.note_btn.grid(row=5, column=0, padx=20, pady=10)
+        self.note_btn.configure(text="Notes")
 
-        self.sidebar_button_3 = customtkinter.CTkButton(self.sidebar_frame, command=self.sidebar_button_event)
-        self.sidebar_button_3.grid(row=3, column=0, padx=20, pady=10)
         self.appearance_mode_label = customtkinter.CTkLabel(self.sidebar_frame, text="Appearance Mode:", anchor="w")
-        self.appearance_mode_label.grid(row=5, column=0, padx=20, pady=(10, 0))
+        self.appearance_mode_label.grid(row=7, column=0, padx=20, pady=(10, 0))
         self.appearance_mode_optionemenu = customtkinter.CTkOptionMenu(self.sidebar_frame, values=["Light", "Dark", "System"],
                                                                        command=self.change_appearance_mode_event)
-        self.appearance_mode_optionemenu.grid(row=6, column=0, padx=20, pady=(10, 10))
+        self.appearance_mode_optionemenu.grid(row=8, column=0, padx=20, pady=(10, 10))
         self.scaling_label = customtkinter.CTkLabel(self.sidebar_frame, text="UI Scaling:", anchor="w")
-        self.scaling_label.grid(row=7, column=0, padx=20, pady=(10, 0))
+        self.scaling_label.grid(row=9, column=0, padx=20, pady=(10, 0))
         self.scaling_optionemenu = customtkinter.CTkOptionMenu(self.sidebar_frame, values=["80%", "90%", "100%", "110%", "120%"],
                                                                command=self.change_scaling_event)
-        self.scaling_optionemenu.grid(row=8, column=0, padx=20, pady=(10, 20))
+        self.scaling_optionemenu.grid(row=10, column=0, padx=20, pady=(10, 20))
 
     def change_appearance_mode_event(self, new_appearance_mode: str):
         customtkinter.set_appearance_mode(new_appearance_mode)
