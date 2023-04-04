@@ -5,7 +5,6 @@ import customtkinter
 customtkinter.set_appearance_mode("Dark")  # Modes: "System" (standard), "Dark", "Light"
 customtkinter.set_default_color_theme("green")  # Themes: "blue" (standard), "green", "dark-blue"
 
-
 class App(customtkinter.CTk):
     def __init__(self):
         super().__init__()
@@ -28,19 +27,19 @@ class App(customtkinter.CTk):
         self.logo_label = customtkinter.CTkLabel(self.sidebar_frame, text="WineMaker", font=customtkinter.CTkFont(size=20, weight="bold"))
         self.logo_label.grid(row=0, column=0, padx=20, pady=(20, 10))
         # Create Home button
-        self.home_btn = customtkinter.CTkButton(self.sidebar_frame, command=self.sidebar_button_event)
+        self.home_btn = customtkinter.CTkButton(self.sidebar_frame, command=self.home_screen)
         self.home_btn.grid(row=1, column=0, padx=20, pady=10)
         self.home_btn.configure(text="Home")
         # Create Wines button
-        self.wines_btn = customtkinter.CTkButton(self.sidebar_frame, command=self.sidebar_button_event)
+        self.wines_btn = customtkinter.CTkButton(self.sidebar_frame, command=self.wine_screen)
         self.wines_btn.grid(row=2, column=0, padx=20, pady=10)
         self.wines_btn.configure(text="Wines")
         # Create Calculations button
-        self.calc_btn = customtkinter.CTkButton(self.sidebar_frame, command=self.sidebar_button_event)
+        self.calc_btn = customtkinter.CTkButton(self.sidebar_frame, command=self.calc_screen)
         self.calc_btn.grid(row=3, column=0, padx=20, pady=10)
         self.calc_btn.configure(text="Calculations")
         # Create Schedule button
-        self.sch_btn = customtkinter.CTkButton(self.sidebar_frame, command=self.sidebar_button_event)
+        self.sch_btn = customtkinter.CTkButton(self.sidebar_frame, command=self.sch_screen)
         self.sch_btn.grid(row=4, column=0, padx=20, pady=10)
         self.sch_btn.configure(text="Schedule")
         # Create Notes button
@@ -54,24 +53,10 @@ class App(customtkinter.CTk):
         self.appearance_mode_optionemenu = customtkinter.CTkOptionMenu(self.sidebar_frame, values=["Light", "Dark", "System"],
                                                                        command=self.change_appearance_mode_event)
         self.appearance_mode_optionemenu.grid(row=8, column=0, padx=20, pady=(10, 10))
+        # ---------------------------------------------------------------------------------------------------------------------------
 
+        self.home_screen()
 
-
-        # Home label
-        self.home_label = customtkinter.CTkLabel(self, text="Home",
-                                                 font=customtkinter.CTkFont(size=30, weight="bold"))
-        self.home_label.grid(row=0, column=1, padx=(20,0), pady=(20, 10))
-        self.sidebar_frame.grid_rowconfigure(2, weight=1)
-
-        # to-do label
-        self.todo_label = customtkinter.CTkLabel(self, text="To-Do",
-                                                 font=customtkinter.CTkFont(size=30, weight="bold"))
-        self.todo_label.grid(row=0, column=3, padx=(20, 0), pady=(20, 10))
-
-        # to-do label
-        self.todo2_label = customtkinter.CTkLabel(self, text="To-Do",
-                                                 font=customtkinter.CTkFont(size=30, weight="bold"))
-        self.todo2_label.grid(row=0, column=4, padx=(20, 0), pady=(20, 10))
 
 
     def change_appearance_mode_event(self, new_appearance_mode: str):
@@ -79,6 +64,54 @@ class App(customtkinter.CTk):
     def sidebar_button_event(self):
         print("sidebar_button click")
 
+    def home_screen(self):
+        self.main_frame = customtkinter.CTkFrame(self, width=120, corner_radius=0)
+        self.main_frame.grid(row=0, column=1, rowspan=4, sticky="nsew")
+        # self.main_frame.grid_rowconfigure(6, weight=1)
+
+        # Home label
+        self.home_label = customtkinter.CTkLabel(self.main_frame, text="Home",
+                                                 font=customtkinter.CTkFont(size=30, weight="bold"))
+        self.home_label.grid(row=0, column=1, padx=(0, 500), pady=(20, 400))
+        # self.sidebar_frame.grid_rowconfigure(2, weight=0)
+
+        # to-do label
+        self.todo_label = customtkinter.CTkLabel(self.main_frame, text="To-Do",
+                                                 font=customtkinter.CTkFont(size=30, weight="bold"))
+        self.todo_label.grid(row=0, column=1, padx=(0, 500), pady=(20, 200))
+
+    def wine_screen(self):
+        self.wine_frame = customtkinter.CTkFrame(self, width=120, corner_radius=0)
+        self.wine_frame.grid(row=0, column=1, rowspan=4, sticky="nsew")
+        # self.main_frame.grid_rowconfigure(6, weight=1)
+
+        # Calc label
+        self.wine_label = customtkinter.CTkLabel(self.wine_frame, text="Wine",
+                                                 font=customtkinter.CTkFont(size=30, weight="bold"))
+        self.wine_label.grid(row=0, column=1, padx=(0, 500), pady=(20, 400))
+
+    def calc_screen(self):
+        self.calc_frame = customtkinter.CTkFrame(self, width=120, corner_radius=0)
+        self.calc_frame.grid(row=0, column=1, rowspan=4, sticky="nsew")
+        # self.main_frame.grid_rowconfigure(6, weight=1)
+
+        # Calc label
+        self.calc_label = customtkinter.CTkLabel(self.calc_frame, text="Calc",
+                                                 font=customtkinter.CTkFont(size=30, weight="bold"))
+        self.calc_label.grid(row=0, column=1, padx=(0, 500), pady=(20, 400))
+
+    def sch_screen(self):
+        self.sch_frame = customtkinter.CTkFrame(self, width=120, corner_radius=0)
+        self.sch_frame.grid(row=0, column=1, rowspan=4, sticky="nsew")
+        # self.main_frame.grid_rowconfigure(6, weight=1)
+
+        # Calc label
+        self.sch_label = customtkinter.CTkLabel(self.sch_frame, text="Schedule",
+                                                 font=customtkinter.CTkFont(size=30, weight="bold"))
+        self.sch_label.grid(row=0, column=1, padx=(0, 500), pady=(20, 400))
+
+
 if __name__ == "__main__":
-    app = App()
-    app.mainloop()
+    # root = customtkinter.CTk()
+    main = App()
+    main.mainloop()
