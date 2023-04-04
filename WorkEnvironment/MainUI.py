@@ -81,9 +81,9 @@ class App(customtkinter.CTk):
         self.todo_label.grid(row=0, column=1, padx=(0, 500), pady=(20, 200))
 
     def wine_screen(self):
+        # Create main frame
         self.wine_frame = customtkinter.CTkFrame(self, width=120, corner_radius=0)
         self.wine_frame.grid(row=0, column=1, rowspan=4, sticky="nsew")
-        # self.main_frame.grid_rowconfigure(6, weight=1)
 
         # Calc label
         self.wine_label = customtkinter.CTkLabel(self.wine_frame, text="Wine",
@@ -91,14 +91,44 @@ class App(customtkinter.CTk):
         self.wine_label.grid(row=0, column=1, padx=(0, 500), pady=(20, 400))
 
     def calc_screen(self):
+        # Create main frame
         self.calc_frame = customtkinter.CTkFrame(self, width=120, corner_radius=0)
         self.calc_frame.grid(row=0, column=1, rowspan=4, sticky="nsew")
-        # self.main_frame.grid_rowconfigure(6, weight=1)
 
         # Calc label
         self.calc_label = customtkinter.CTkLabel(self.calc_frame, text="Calc",
                                                  font=customtkinter.CTkFont(size=30, weight="bold"))
         self.calc_label.grid(row=0, column=1, padx=(0, 500), pady=(20, 400))
+
+        # Multiplication test
+        self.entry1 = customtkinter.CTkEntry(self.calc_frame, placeholder_text="Num 1")
+        self.entry1.place(x=10, y=100)
+        self.entry2 = customtkinter.CTkEntry(self.calc_frame, placeholder_text="Num2")
+        self.entry2.place(x=200, y=100)
+        # Mult label
+        self.mult_label = customtkinter.CTkLabel(self.calc_frame, text="x", font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.mult_label.place(x=170, y=100)
+        # equals label
+        self.eq_label = customtkinter.CTkLabel(self.calc_frame, text="=",
+                                                 font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.eq_label.place(x=360, y=100)
+
+        # answer
+        self.an_label = customtkinter.CTkLabel(self.calc_frame, text="answer",
+                                               font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.an_label.place(x=390, y=100)
+
+        # calculate button
+        self.get_an_btn = customtkinter.CTkButton(self.calc_frame, command=self.mult)
+        self.get_an_btn.place(x=490, y=100)
+        self.get_an_btn.configure(text="Calculate")
+
+    def mult(self):
+        self.an_label.configure(text=(str(int(self.entry1.get()) * int(self.entry2.get()))))
+
+
+
+
 
     def sch_screen(self):
         self.sch_frame = customtkinter.CTkFrame(self, width=120, corner_radius=0)
