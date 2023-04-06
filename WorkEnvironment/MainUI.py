@@ -75,20 +75,86 @@ class App(customtkinter.CTk):
         self.home_label.grid(row=0, column=1, padx=(0, 500), pady=(20, 400))
         # self.sidebar_frame.grid_rowconfigure(2, weight=0)
 
+        # To-do---------------------------------------------------------------------------------------
         # to-do label
         self.todo_label = customtkinter.CTkLabel(self.main_frame, text="To-Do",
                                                  font=customtkinter.CTkFont(size=30, weight="bold"))
         self.todo_label.grid(row=0, column=1, padx=(0, 500), pady=(20, 200))
+        # to-do list
+        self.scrollable_todo = customtkinter.CTkScrollableFrame(self.main_frame, width=450, height=400)
+        self.scrollable_todo.place(x=0, y=160)
+
+        for i in range(4):
+            # wine
+            todo = customtkinter.CTkLabel(master=self.scrollable_todo, text=str(i+1)+") Whatever to-do",
+                                                     font=customtkinter.CTkFont(size=20, weight="bold"))
+            todo.grid(row=i*2, column=0, padx=10, pady=(0, 20))
+
+            complete = customtkinter.CTkButton(self.scrollable_todo, text="Completed")
+            complete.grid(row=(i*2)+1, column=0, padx=10, pady=(0, 20))
+
 
     def wine_screen(self):
         # Create main frame
         self.wine_frame = customtkinter.CTkFrame(self, width=120, corner_radius=0)
         self.wine_frame.grid(row=0, column=1, rowspan=4, sticky="nsew")
 
-        # Calc label
-        self.wine_label = customtkinter.CTkLabel(self.wine_frame, text="Wine",
+        # Wine label
+        self.wines_label = customtkinter.CTkLabel(self.wine_frame, text="Wines",
                                                  font=customtkinter.CTkFont(size=30, weight="bold"))
-        self.wine_label.grid(row=0, column=1, padx=(0, 500), pady=(20, 400))
+        self.wines_label.place(x=20, y=20)
+
+        # Create wine tabs-------------------------------------------------------------------------
+        # wine
+        self.wine_label = customtkinter.CTkLabel(self.wine_frame, text="Wine",
+                                                 font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.wine_label.place(x=40, y=100)
+        # tank
+        self.tank_label = customtkinter.CTkLabel(self.wine_frame, text="Tank(s)",
+                                                 font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.tank_label.place(x=110, y=100)
+        # sugar
+        self.sugar_label = customtkinter.CTkLabel(self.wine_frame, text="Sugar",
+                                                 font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.sugar_label.place(x=200, y=100)
+        # pH
+        self.ph_label = customtkinter.CTkLabel(self.wine_frame, text="pH",
+                                                 font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.ph_label.place(x=270, y=100)
+        # Bottom Line
+        self.wine_line = customtkinter.CTkLabel(self.wine_frame, text="----------------------------------------------------------------------------------",
+                                               font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.wine_line.place(x=20, y=130)
+        # ---------------------------------------------------------------------------------------------------------
+
+        # Add scrollable frame
+        self.scrollable_frame = customtkinter.CTkScrollableFrame(self.wine_frame, width=850, height=400)
+        self.scrollable_frame.place(x=20, y=150)
+
+        # Loop for adding wines and values
+        for i in range(4):
+            # wine
+            wine = customtkinter.CTkLabel(master=self.scrollable_frame, text="Wine"+str(i),
+                                                     font=customtkinter.CTkFont(size=20, weight="bold"))
+            wine.grid(row=i, column=0, padx=10, pady=(0, 20))
+            # tank
+            tank = customtkinter.CTkLabel(master=self.scrollable_frame, text="Tank(s)",
+                                                     font=customtkinter.CTkFont(size=20, weight="bold"))
+            tank.grid(row=i, column=1, padx=10, pady=(0, 20))
+            # sugar
+            sugar = customtkinter.CTkLabel(master=self.scrollable_frame, text="Sugar",
+                                                      font=customtkinter.CTkFont(size=20, weight="bold"))
+            sugar.grid(row=i, column=2, padx=10, pady=(0, 20))
+            # pH
+            ph = customtkinter.CTkLabel(master=self.scrollable_frame, text="pH",
+                                                   font=customtkinter.CTkFont(size=20, weight="bold"))
+            ph.grid(row=i, column=3, padx=10, pady=(0, 20))
+
+            # edit button
+            self.scrollable_frame.columnconfigure(4, weight=1)
+            edit = customtkinter.CTkButton(self.scrollable_frame, text="...", width=20, height=15)
+            edit.grid(row=i, column=5, padx=10, pady=(0, 20))
+
 
     def calc_screen(self):
         # Create main frame
