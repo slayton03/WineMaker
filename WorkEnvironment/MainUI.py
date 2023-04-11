@@ -79,16 +79,16 @@ class App(customtkinter.CTk):
 
         self.home_screen()
 
-        for i in range(3):
-            current["A" + str(i+2)] = 1
-            # print("A" + str(i+2))
-
-        for i in range(self.get_maximum_rows(sheet_object=current)-1):
-            current["B" + str(i + 2)] = 2
-            current["C" + str(i + 2)] = 3
-            current["D" + str(i + 2)] = 4
-
-        book.save("WineMakerData.xlsx")
+        # for i in range(3):
+        #     current["A" + str(i+2)] = 1
+        #     # print("A" + str(i+2))
+        #
+        # for i in range(self.get_maximum_rows(sheet_object=current)-1):
+        #     current["B" + str(i + 2)] = 2
+        #     current["C" + str(i + 2)] = 3
+        #     current["D" + str(i + 2)] = 4
+        #
+        # book.save("WineMakerData.xlsx")
 
         # current["C9"] = 66
 
@@ -155,6 +155,9 @@ class App(customtkinter.CTk):
         self.ph_label = customtkinter.CTkLabel(self.wine_frame, text="pH",
                                                  font=customtkinter.CTkFont(size=20, weight="bold"))
         self.ph_label.place(x=270, y=100)
+        #Add button
+        self.addWine = customtkinter.CTkButton(self.wine_frame, text="+", width=20, height=20)
+        self.addWine.place(x=700, y=110)
         # Bottom Line
         self.wine_line = customtkinter.CTkLabel(self.wine_frame, text="----------------------------------------------------------------------------------",
                                                font=customtkinter.CTkFont(size=20, weight="bold"))
@@ -166,21 +169,21 @@ class App(customtkinter.CTk):
         self.scrollable_frame.place(x=20, y=150)
 
         # Loop for adding wines and values
-        for i in range(4):
+        for i in range(self.get_maximum_rows(sheet_object=current)-1):
             # wine
-            wine = customtkinter.CTkLabel(master=self.scrollable_frame, text="Wine"+str(i),
+            wine = customtkinter.CTkLabel(master=self.scrollable_frame, text=current["B" + str(i+2)].value,
                                                      font=customtkinter.CTkFont(size=20, weight="bold"))
             wine.grid(row=i, column=0, padx=10, pady=(0, 20))
             # tank
-            tank = customtkinter.CTkLabel(master=self.scrollable_frame, text="Tank(s)",
+            tank = customtkinter.CTkLabel(master=self.scrollable_frame, text=current["C" + str(i+2)].value,
                                                      font=customtkinter.CTkFont(size=20, weight="bold"))
             tank.grid(row=i, column=1, padx=10, pady=(0, 20))
             # sugar
-            sugar = customtkinter.CTkLabel(master=self.scrollable_frame, text="Sugar",
+            sugar = customtkinter.CTkLabel(master=self.scrollable_frame, text=current["D" + str(i+2)].value,
                                                       font=customtkinter.CTkFont(size=20, weight="bold"))
             sugar.grid(row=i, column=2, padx=10, pady=(0, 20))
             # pH
-            ph = customtkinter.CTkLabel(master=self.scrollable_frame, text="pH",
+            ph = customtkinter.CTkLabel(master=self.scrollable_frame, text=current["E" + str(i+2)].value,
                                                    font=customtkinter.CTkFont(size=20, weight="bold"))
             ph.grid(row=i, column=3, padx=10, pady=(0, 20))
 
