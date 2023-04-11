@@ -1,6 +1,28 @@
 import tkinter
 import tkinter.messagebox
 import customtkinter
+import os.path
+import pandas as pd
+from openpyxl import Workbook, load_workbook
+
+if os.path.exists("WineMakerData.xlsx"):
+    book = load_workbook("WineMakerData.xlsx")
+    current = book.active
+
+else:
+    book = Workbook()
+    current = book.active
+    current.title = "WineData"
+    current["A1"] = "Index"
+    current["B1"] = "Wine"
+    current["C1"] = "Tank"
+    current["D1"] = "Sugar"
+    current["E1"] = "pH"
+    book.save("WineMakerData.xlsx")
+    # ws1 = wb.create_sheet("Wine Data")
+
+
+
 
 customtkinter.set_appearance_mode("Dark")  # Modes: "System" (standard), "Dark", "Light"
 customtkinter.set_default_color_theme("green")  # Themes: "blue" (standard), "green", "dark-blue"
@@ -57,6 +79,18 @@ class App(customtkinter.CTk):
 
         self.home_screen()
 
+        for i in range(3):
+            current["A" + str(i+2)] = 1
+            # print("A" + str(i+2))
+
+        for i in range(self.get_maximum_rows(sheet_object=current)-1):
+            current["B" + str(i + 2)] = 2
+            current["C" + str(i + 2)] = 3
+            current["D" + str(i + 2)] = 4
+
+        book.save("WineMakerData.xlsx")
+
+        # current["C9"] = 66
 
 
     def change_appearance_mode_event(self, new_appearance_mode: str):
@@ -212,6 +246,13 @@ class App(customtkinter.CTk):
         self.sch_label = customtkinter.CTkLabel(self.sch_frame, text="Schedule",
                                                  font=customtkinter.CTkFont(size=30, weight="bold"))
         self.sch_label.grid(row=0, column=1, padx=(0, 500), pady=(20, 400))
+
+    def get_maximum_rows(self, sheet_object):
+        rows = 0
+        for max_row, row in enumerate(sheet_object, 1):
+            if not all(col.value is None for col in row):
+                rows += 1
+        return rows
 
 
 if __name__ == "__main__":
