@@ -213,8 +213,10 @@ class App(customtkinter.CTk):
         # Multiplication test
         self.entry1 = customtkinter.CTkEntry(self.calctabs.tab("Basic"), placeholder_text="Num 1")
         self.entry1.place(x=10, y=0)
+        # self.entry1.insert(0, current["C2"].value)
         self.entry2 = customtkinter.CTkEntry(self.calctabs.tab("Basic"), placeholder_text="Num2")
         self.entry2.place(x=200, y=0)
+        # self.entry2.insert(0, current["C3"].value)
         # Mult label
         self.mult_label = customtkinter.CTkLabel(self.calctabs.tab("Basic"), text="x", font=customtkinter.CTkFont(size=20, weight="bold"))
         self.mult_label.place(x=170, y=0)
