@@ -18,6 +18,7 @@ else:
     current["C1"] = "Tank"
     current["D1"] = "Sugar"
     current["E1"] = "pH"
+    current["F1"] = "Volume"
     book.save("WineMakerData.xlsx")
     # ws1 = wb.create_sheet("Wine Data")
 
@@ -189,7 +190,7 @@ class App(customtkinter.CTk):
 
             # edit button
             self.scrollable_frame.columnconfigure(4, weight=1)
-            edit = customtkinter.CTkButton(self.scrollable_frame, text="...", width=20, height=15)
+            edit = customtkinter.CTkButton(self.scrollable_frame, text="...", width=20, height=15, command=lambda: self.wine_info(i+2))
             edit.grid(row=i, column=5, padx=10, pady=(0, 20))
 
     def add_wine(self):
@@ -218,24 +219,83 @@ class App(customtkinter.CTk):
         self.tank_entry = customtkinter.CTkEntry(self.add_wine_frame, placeholder_text="Tank Number")
         self.tank_entry.place(x=100, y=150)
 
+        # Input Volume
+        self.new_vol = customtkinter.CTkLabel(self.add_wine_frame, text="Volume:",
+                                                font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.new_vol.place(x=20, y=200)
+
+        self.vol_entry = customtkinter.CTkEntry(self.add_wine_frame, placeholder_text="Volume")
+        self.vol_entry.place(x=100, y=200)
+
         # Input Sugar
         self.new_sugar = customtkinter.CTkLabel(self.add_wine_frame, text="Sugar:",
                                                font=customtkinter.CTkFont(size=20, weight="bold"))
-        self.new_sugar.place(x=20, y=200)
+        self.new_sugar.place(x=20, y=250)
 
         self.sugar_entry = customtkinter.CTkEntry(self.add_wine_frame, placeholder_text="Sugar")
-        self.sugar_entry.place(x=100, y=200)
+        self.sugar_entry.place(x=100, y=250)
 
         # Input Wine pH
         self.new_ph = customtkinter.CTkLabel(self.add_wine_frame, text="pH:",
                                                font=customtkinter.CTkFont(size=20, weight="bold"))
-        self.new_ph.place(x=20, y=250)
+        self.new_ph.place(x=20, y=300)
 
         self.ph_entry = customtkinter.CTkEntry(self.add_wine_frame, placeholder_text="pH")
-        self.ph_entry.place(x=100, y=250)
+        self.ph_entry.place(x=100, y=300)
         #Confirm Button
         self.confirm_btn = customtkinter.CTkButton(self.add_wine_frame, text="Confirm", command=self.confirm_add)
-        self.confirm_btn.place(x=20, y=300)
+        self.confirm_btn.place(x=20, y=350)
+    def wine_info(self, index: int):
+        # Create main frame
+        self.wine_info_frame = customtkinter.CTkFrame(self, width=120, corner_radius=0)
+        self.wine_info_frame.grid(row=0, column=1, rowspan=4, sticky="nsew")
+
+        # Info label
+        self.wines_info_label = customtkinter.CTkLabel(self.wine_info_frame, text="Wine Information",
+                                                      font=customtkinter.CTkFont(size=30, weight="bold"))
+        self.wines_info_label.place(x=20, y=20)
+
+        # Input Wine name
+        self.wine_name = customtkinter.CTkLabel(self.wine_info_frame, text="Name:",
+                                               font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.wine_name.place(x=20, y=100)
+
+        self.current_wine = customtkinter.CTkLabel(self.wine_info_frame, text=current["B" + str(index)].value,
+                                               font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.current_wine.place(x=100, y=100)
+
+        # Input tank number
+        self.tank_num = customtkinter.CTkLabel(self.wine_info_frame, text="Tank:",
+                                               font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.tank_num.place(x=20, y=150)
+
+        self.current_tank = customtkinter.CTkEntry(self.wine_info_frame, placeholder_text="Tank Number")
+        self.current_tank.place(x=100, y=150)
+
+        # Input Volume
+        self.vol_num = customtkinter.CTkLabel(self.wine_info_frame, text="Volume:",
+                                              font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.vol_num.place(x=20, y=200)
+
+        self.current_vol = customtkinter.CTkEntry(self.wine_info_frame, placeholder_text="Volume")
+        self.current_vol.place(x=100, y=200)
+
+        # Input Sugar
+        self.sugar_num = customtkinter.CTkLabel(self.wine_info_frame, text="Sugar:",
+                                                font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.sugar_num.place(x=20, y=250)
+
+        self.current_sugar = customtkinter.CTkEntry(self.wine_info_frame, placeholder_text="Sugar")
+        self.current_sugar.place(x=100, y=250)
+
+        # Input Wine pH
+        self.ph_num = customtkinter.CTkLabel(self.wine_info_frame, text="pH:",
+                                             font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.ph_num.place(x=20, y=300)
+
+        self.current_ph = customtkinter.CTkEntry(self.wine_info_frame, placeholder_text="pH")
+        self.current_ph.place(x=100, y=300)
+
 
     def confirm_add(self):
         ind = self.get_maximum_rows(sheet_object=current)+1
@@ -245,6 +305,7 @@ class App(customtkinter.CTk):
         current["C" + str(ind)] = int(self.tank_entry.get())
         current["D" + str(ind)] = int(self.sugar_entry.get())
         current["E" + str(ind)] = float(self.ph_entry.get())
+        current["F" + str(ind)] = int(self.vol_entry.get())
         book.save("WineMakerData.xlsx")
         self.wine_screen()
 
