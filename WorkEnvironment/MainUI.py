@@ -79,10 +79,10 @@ class App(customtkinter.CTk):
                                                                        command=self.change_appearance_mode_event)
         self.appearance_mode_optionemenu.grid(row=8, column=0, padx=20, pady=(10, 10))
         # ---------------------------------------------------------------------------------------------------------------------------
-        # Run loop to fill array with indexes, this is for indexing purposes
-        self.index_array = []
-        for i in range(self.get_maximum_rows(sheet_object=current) - 1):
-            self.index_array.append(2+i)
+        # # Run loop to fill array with indexes, this is for indexing purposes
+        # self.index_array = []
+        # for i in range(self.get_maximum_rows(sheet_object=current) - 1):
+        #     self.index_array.append(2+i)
 
 
 
@@ -127,6 +127,9 @@ class App(customtkinter.CTk):
         self.scrollable_todo = customtkinter.CTkScrollableFrame(self.main_frame, width=450, height=400)
         self.scrollable_todo.place(x=0, y=160)
 
+        # Sets info for index purposes
+        self.info_name = current["B2"].value
+
         for i in range(4):
             # wine
             todo = customtkinter.CTkLabel(master=self.scrollable_todo, text=str(i+1)+") Whatever to-do",
@@ -155,6 +158,7 @@ class App(customtkinter.CTk):
         # Stage
         # ph
         # SO2
+
         # wine
         self.wine_label = customtkinter.CTkLabel(self.wine_frame, text="Wine",
                                                  font=customtkinter.CTkFont(size=20, weight="bold"))
@@ -162,20 +166,29 @@ class App(customtkinter.CTk):
         # tank
         self.tank_label = customtkinter.CTkLabel(self.wine_frame, text="Tank(s)",
                                                  font=customtkinter.CTkFont(size=20, weight="bold"))
-        self.tank_label.place(x=110, y=100)
-        # sugar
+        self.tank_label.place(x=150, y=100)
+        # volume
         self.vol_label = customtkinter.CTkLabel(self.wine_frame, text="Volume",
                                                  font=customtkinter.CTkFont(size=20, weight="bold"))
-        self.vol_label.place(x=200, y=100)
+        self.vol_label.place(x=270, y=100)
+        # stage
+        self.stage_label = customtkinter.CTkLabel(self.wine_frame, text="Stage",
+                                                font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.stage_label.place(x=470, y=100)
+
         # pH
         self.ph_label = customtkinter.CTkLabel(self.wine_frame, text="pH",
                                                  font=customtkinter.CTkFont(size=20, weight="bold"))
-        self.ph_label.place(x=270, y=100)
+        self.ph_label.place(x=640, y=100)
+        # SO2
+        self.so2_label = customtkinter.CTkLabel(self.wine_frame, text="SO2",
+                                                font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.so2_label.place(x=730, y=100)
         #Add button
         self.addWine = customtkinter.CTkButton(self.wine_frame, text="+", width=20, height=20, command=self.add_wine)
         self.addWine.place(x=845, y=110)
         # Bottom Line
-        self.wine_line = customtkinter.CTkLabel(self.wine_frame, text="----------------------------------------------------------------------------------------------------",
+        self.wine_line = customtkinter.CTkLabel(self.wine_frame, text="---------------------------------------------------------------------------------------------------------------------",
                                                font=customtkinter.CTkFont(size=20, weight="bold"))
         self.wine_line.place(x=20, y=130)
         # ---------------------------------------------------------------------------------------------------------
@@ -203,15 +216,26 @@ class App(customtkinter.CTk):
                                                       font=customtkinter.CTkFont(size=20, weight="bold"))
             volume.grid(row=i, column=4, padx=10, pady=(0, 20))
             self.scrollable_frame.columnconfigure(5, weight=1)
+            # Stage
+            stage = customtkinter.CTkLabel(master=self.scrollable_frame,
+                                            text=current["G" + str(i + 2)].value,
+                                            font=customtkinter.CTkFont(size=20, weight="bold"))
+            stage.grid(row=i, column=6, padx=10, pady=(0, 20))
+            self.scrollable_frame.columnconfigure(7, weight=1)
             # pH
             ph = customtkinter.CTkLabel(master=self.scrollable_frame, text=current["E" + str(i+2)].value,
                                                    font=customtkinter.CTkFont(size=20, weight="bold"))
-            ph.grid(row=i, column=6, padx=10, pady=(0, 20))
+            ph.grid(row=i, column=8, padx=8, pady=(0, 20))
+            self.scrollable_frame.columnconfigure(9, weight=1)
+            # SO2
+            so2 = customtkinter.CTkLabel(master=self.scrollable_frame, text=current["H" + str(i + 2)].value,
+                                        font=customtkinter.CTkFont(size=20, weight="bold"))
+            so2.grid(row=i, column=10, padx=10, pady=(0, 20))
 
             # edit button
-            self.scrollable_frame.columnconfigure(7, weight=1)
+            self.scrollable_frame.columnconfigure(11, weight=1)
             edit = customtkinter.CTkButton(self.scrollable_frame, text="...", width=20, height=15, command=lambda: self.wine_info())  # (int(current["A" + str(i+2)].value) + 1))
-            edit.grid(row=i, column=8, padx=10, pady=(0, 20))
+            edit.grid(row=i, column=12, padx=10, pady=(0, 20))
 
     def add_wine(self):
         # Create main frame
@@ -263,7 +287,7 @@ class App(customtkinter.CTk):
         self.ph_entry = customtkinter.CTkEntry(self.add_wine_frame, placeholder_text="pH")
         self.ph_entry.place(x=120, y=300)
         # Input Wine state
-        self.new_state = customtkinter.CTkLabel(self.add_wine_frame, text="State:",
+        self.new_state = customtkinter.CTkLabel(self.add_wine_frame, text="Stage:",
                                              font=customtkinter.CTkFont(size=20, weight="bold"))
         self.new_state.place(x=20, y=350)
 
@@ -337,7 +361,7 @@ class App(customtkinter.CTk):
         self.current_ph = customtkinter.CTkLabel(self.wine_info_frame, text=current["E" + info_index].value)
         self.current_ph.place(x=120, y=300)
         # Show Wine state
-        self.state_name = customtkinter.CTkLabel(self.wine_info_frame, text="State:",
+        self.state_name = customtkinter.CTkLabel(self.wine_info_frame, text="Stage:",
                                              font=customtkinter.CTkFont(size=20, weight="bold"))
         self.state_name.place(x=20, y=350)
 
@@ -376,7 +400,7 @@ class App(customtkinter.CTk):
         #Create tabs
         self.calctabs = customtkinter.CTkTabview(self.calc_frame, width=850, height=500)
         self.calctabs.place(x=20, y=50)
-        self.calctabs.add("Basic")
+        self.calctabs.add("SO2")
         self.calctabs.add("Main")
         self.calctabs.add("Test")
 
@@ -385,30 +409,95 @@ class App(customtkinter.CTk):
                                                  font=customtkinter.CTkFont(size=30, weight="bold"))
         self.calc_label.place(x=20, y=20)
 
-        # Multiplication test
-        self.entry1 = customtkinter.CTkEntry(self.calctabs.tab("Basic"), placeholder_text="Num 1")
-        self.entry1.place(x=10, y=0)
-        # self.entry1.insert(0, current["C2"].value)
-        self.entry2 = customtkinter.CTkEntry(self.calctabs.tab("Basic"), placeholder_text="Num2")
-        self.entry2.place(x=200, y=0)
-        # self.entry2.insert(0, current["C3"].value)
-        # Mult label
-        self.mult_label = customtkinter.CTkLabel(self.calctabs.tab("Basic"), text="x", font=customtkinter.CTkFont(size=20, weight="bold"))
-        self.mult_label.place(x=170, y=0)
-        # equals label
-        self.eq_label = customtkinter.CTkLabel(self.calctabs.tab("Basic"), text="=",
-                                                 font=customtkinter.CTkFont(size=20, weight="bold"))
-        self.eq_label.place(x=360, y=0)
+        # Wine dropdown bar
+        self.wine_drop = customtkinter.CTkComboBox(self.calc_frame,
+                                                   values=[current["B" + str(i + 2)].value for i in
+                                                           range(self.get_maximum_rows(sheet_object=current) - 1)],
+                                                   command=self.set_calc_info)
+        self.wine_drop.place(x=320, y=25)
+        self.wine_drop.set(self.info_name)
+        for i in range(self.get_maximum_rows(sheet_object=current) - 1):  # in progress loop for combo box index
+            if current["B" + str(i + 2)].value == self.wine_drop.get():
+                info_index = str(i + 2)
 
-        # answer
-        self.an_label = customtkinter.CTkLabel(self.calctabs.tab("Basic"), text="answer",
-                                               font=customtkinter.CTkFont(size=20, weight="bold"))
-        self.an_label.place(x=390, y=0)
+        # SO2 Calculation
+        # Show Wine name
+        self.s02_wine_name = customtkinter.CTkLabel(self.calctabs.tab("SO2"), text="Name:",
+                                                        font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.s02_wine_name.place(x=20, y=0)
 
-        # calculate button
-        self.get_an_btn = customtkinter.CTkButton(self.calctabs.tab("Basic"), width=80, command=self.mult)
-        self.get_an_btn.place(x=490, y=0)
-        self.get_an_btn.configure(text="Calculate")
+        self.s02_current_wine = customtkinter.CTkLabel(self.calctabs.tab("SO2"), text=current["B" + info_index].value)
+        self.s02_current_wine.place(x=200, y=0)
+
+        # Show tank number
+        self.s02_tank_num = customtkinter.CTkLabel(self.calctabs.tab("SO2"), text="Tank:",
+                                                       font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.s02_tank_num.place(x=20, y=50)
+
+        self.s02_current_tank = customtkinter.CTkLabel(self.calctabs.tab("SO2"), text=current["C" + info_index].value)
+        self.s02_current_tank.place(x=200, y=50)
+
+        # Show Volume
+        self.s02_vol_num = customtkinter.CTkLabel(self.calctabs.tab("SO2"), text="Volume:",
+                                                      font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.s02_vol_num.place(x=20, y=100)
+
+        self.s02_current_vol = customtkinter.CTkEntry(self.calctabs.tab("SO2")) # , text=current["F" + info_index].value)
+        self.s02_current_vol.place(x=200, y=100)
+        self.s02_current_vol.insert(0,current["F" + info_index].value)
+        self.l_label = customtkinter.CTkLabel(self.calctabs.tab("SO2"), text="L")
+        self.l_label.place(x=350, y=100)
+        # Add SO2 addition
+        self.s02_s02_num = customtkinter.CTkLabel(self.calctabs.tab("SO2"), text="SO2 Addition:",
+                                                  font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.s02_s02_num.place(x=20, y=150)
+        self.s02_added_s02 = customtkinter.CTkEntry(self.calctabs.tab("SO2"))  # , text=current["F" + info_index].value)
+        self.s02_added_s02.place(x=200, y=150)
+        self.ppm_label = customtkinter.CTkLabel(self.calctabs.tab("SO2"), text="ppm")
+        self.ppm_label.place(x=350, y=150)
+        # SO2 result
+        self.s02_result = customtkinter.CTkLabel(self.calctabs.tab("SO2"), text="Tank:",
+                                                   font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.s02_result.place(x=20, y=200)
+
+        self.s02_current_result = customtkinter.CTkLabel(self.calctabs.tab("SO2"), text="answer")
+        self.s02_current_result.place(x=200, y=200)
+
+        self.sO2_calculate = customtkinter.CTkButton(self.calctabs.tab("SO2"), text="Calculate", command=self.calc_so2)
+        self.sO2_calculate.place(x=20, y=250)
+
+
+        # # Multiplication test
+        # self.entry1 = customtkinter.CTkEntry(self.calctabs.tab("SO2"), placeholder_text="Num 1")
+        # self.entry1.place(x=10, y=0)
+        # # self.entry1.insert(0, current["C2"].value)
+        # self.entry2 = customtkinter.CTkEntry(self.calctabs.tab("SO2"), placeholder_text="Num2")
+        # self.entry2.place(x=200, y=0)
+        # # self.entry2.insert(0, current["C3"].value)
+        # # Mult label
+        # self.mult_label = customtkinter.CTkLabel(self.calctabs.tab("SO2"), text="x", font=customtkinter.CTkFont(size=20, weight="bold"))
+        # self.mult_label.place(x=170, y=0)
+        # # equals label
+        # self.eq_label = customtkinter.CTkLabel(self.calctabs.tab("SO2"), text="=",
+        #                                          font=customtkinter.CTkFont(size=20, weight="bold"))
+        # self.eq_label.place(x=360, y=0)
+        #
+        # # answer
+        # self.an_label = customtkinter.CTkLabel(self.calctabs.tab("SO2"), text="answer",
+        #                                        font=customtkinter.CTkFont(size=20, weight="bold"))
+        # self.an_label.place(x=390, y=0)
+        #
+        # # calculate button
+        # self.get_an_btn = customtkinter.CTkButton(self.calctabs.tab("SO2"), width=80, command=self.mult)
+        # self.get_an_btn.place(x=490, y=0)
+        # self.get_an_btn.configure(text="Calculate")
+
+    def set_calc_info(self, val : str):
+        self.info_name = self.wine_drop.get()
+        self.calc_screen()
+
+    def calc_so2(self):
+        self.s02_current_result.configure(text=str(((float(self.s02_current_vol.get())/100))*((float(self.s02_added_s02.get())/10)*2)))
 
     def mult(self):
         self.an_label.configure(text=(str(int(self.entry1.get()) * int(self.entry2.get()))))
