@@ -4,6 +4,7 @@ import customtkinter
 import os.path
 import pandas as pd
 from openpyxl import Workbook, load_workbook
+from datetime import date
 
 if os.path.exists("WineMakerData.xlsx"):
     book = load_workbook("WineMakerData.xlsx")
@@ -21,6 +22,8 @@ else:
     current["F1"] = "Volume"
     current["G1"] = "State"
     current["H1"] = "SO2"
+
+    sch = book.create_sheet("Schedule")
     book.save("WineMakerData.xlsx")
     # ws1 = wb.create_sheet("Wine Data")
 
@@ -456,7 +459,7 @@ class App(customtkinter.CTk):
         self.ppm_label = customtkinter.CTkLabel(self.calctabs.tab("SO2"), text="ppm")
         self.ppm_label.place(x=350, y=150)
         # SO2 result
-        self.s02_result = customtkinter.CTkLabel(self.calctabs.tab("SO2"), text="Tank:",
+        self.s02_result = customtkinter.CTkLabel(self.calctabs.tab("SO2"), text="Meta Addition:",
                                                    font=customtkinter.CTkFont(size=20, weight="bold"))
         self.s02_result.place(x=20, y=200)
 
@@ -497,7 +500,7 @@ class App(customtkinter.CTk):
         self.calc_screen()
 
     def calc_so2(self):
-        self.s02_current_result.configure(text=str(((float(self.s02_current_vol.get())/100))*((float(self.s02_added_s02.get())/10)*2)))
+        self.s02_current_result.configure(text=str(((float(self.s02_current_vol.get())/100))*((float(self.s02_added_s02.get())/10)*2))+ " g")
 
     def mult(self):
         self.an_label.configure(text=(str(int(self.entry1.get()) * int(self.entry2.get()))))
