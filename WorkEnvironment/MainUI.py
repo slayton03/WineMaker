@@ -127,10 +127,10 @@ class App(customtkinter.CTk):
         # to-do label
         self.todo_label = customtkinter.CTkLabel(self.main_frame, text="To-Do",
                                                  font=customtkinter.CTkFont(size=30, weight="bold"))
-        self.todo_label.grid(row=0, column=1, padx=(0, 500), pady=(20, 200))
+        self.todo_label.place(x=0,y=70)
         # to-do list
         self.scrollable_todo = customtkinter.CTkScrollableFrame(self.main_frame, width=450, height=400)
-        self.scrollable_todo.place(x=0, y=160)
+        self.scrollable_todo.place(x=0, y=120)
 
         # Sets info for index purposes
         self.info_name = current["B2"].value
@@ -143,6 +143,34 @@ class App(customtkinter.CTk):
 
             complete = customtkinter.CTkButton(self.scrollable_todo, text="Completed")
             complete.grid(row=(i*2)+1, column=0, padx=10, pady=(0, 20))
+
+        # Tank occupancy--------------------------------------------------------------------------------------
+        #Tank label
+        self.tank_home_label = customtkinter.CTkLabel(self.main_frame, text="Tanks:",
+                                                 font=customtkinter.CTkFont(size=30, weight="bold"))
+        self.tank_home_label.place(x=500, y=70)
+        # Loop for tank numbers
+        self.tanks = []
+        self.volumes = []
+        for i in range(11):
+            # Main tank label
+            home_tank_num = customtkinter.CTkLabel(self.main_frame, text="Tank " + str(i+1) + ":", font=customtkinter.CTkFont(size=20))
+            home_tank_num.place(x=500, y=((120)+(i*40)))
+            # Wine name
+            home_wine_name = customtkinter.CTkLabel(self.main_frame, text="empty") # , font=customtkinter.CTkFont(size=20))
+            home_wine_name.place(x=650, y=((120)+(i*40)))
+            self.tanks.append(home_wine_name)
+            # Volume at tank
+            home_wine_vol = customtkinter.CTkLabel(self.main_frame,text="0 L")  # , font=customtkinter.CTkFont(size=20))
+            home_wine_vol.place(x=800, y=((120) + (i * 40)))
+            self.volumes.append(home_wine_vol)
+
+        for i in range(self.get_maximum_rows(sheet_object=current) - 1):
+            if(current["C" + str(i+2)].value < 12):
+                self.tanks[current["C" + str(i+2)].value-1].configure(text=current["B" + str(i+2)].value, font=customtkinter.CTkFont(size=20, weight="bold"))
+                self.volumes[current["C" + str(i+2)].value-1].configure(text=str(current["F" + str(i+2)].value) + " L", font=customtkinter.CTkFont(size=20, weight="bold"))
+
+
 
 
     def wine_screen(self):
@@ -175,20 +203,20 @@ class App(customtkinter.CTk):
         # volume
         self.vol_label = customtkinter.CTkLabel(self.wine_frame, text="Volume",
                                                  font=customtkinter.CTkFont(size=20, weight="bold"))
-        self.vol_label.place(x=270, y=100)
+        self.vol_label.place(x=290, y=100)
         # stage
         self.stage_label = customtkinter.CTkLabel(self.wine_frame, text="Stage",
                                                 font=customtkinter.CTkFont(size=20, weight="bold"))
-        self.stage_label.place(x=470, y=100)
+        self.stage_label.place(x=460, y=100)
 
         # pH
         self.ph_label = customtkinter.CTkLabel(self.wine_frame, text="pH",
                                                  font=customtkinter.CTkFont(size=20, weight="bold"))
-        self.ph_label.place(x=640, y=100)
+        self.ph_label.place(x=600, y=100)
         # SO2
         self.so2_label = customtkinter.CTkLabel(self.wine_frame, text="SO2",
                                                 font=customtkinter.CTkFont(size=20, weight="bold"))
-        self.so2_label.place(x=730, y=100)
+        self.so2_label.place(x=710, y=100)
         #Add button
         self.addWine = customtkinter.CTkButton(self.wine_frame, text="+", width=20, height=20, command=self.add_wine)
         self.addWine.place(x=845, y=110)
@@ -742,11 +770,11 @@ class App(customtkinter.CTk):
 
     def calc_ferm(self):
         cur_alc = float(self.ferm_added_brix.get())*.58
-        self.alc_current_result.configure(text=str(self.round_half_up(cur_alc,4)))
+        self.alc_current_result.configure(text=str(self.round_half_up(cur_alc,4)) + " %")
         vol_gal = float(self.ferm_current_vol.get())*.26417205
         self.vol_current_result.configure(text=str(self.round_half_up(vol_gal,2)) + "  Gallons")
         added_yeast = (float(self.ferm_current_vol.get())/100)*float(self.yeast_drop.get())
-        self.yeast_current_result.configure(text=str(self.round_half_up(added_yeast,4)))
+        self.yeast_current_result.configure(text=str(self.round_half_up(added_yeast,4)) + " g")
         self.water_current_result.configure(text=str(self.round_half_up((added_yeast/100),4)) + " L")
         fermaid_lb = (vol_gal/1000)*2
         self.fermaid_lb_current_result.configure(text=str(self.round_half_up(fermaid_lb,2)) + " lbs")
@@ -775,10 +803,10 @@ class App(customtkinter.CTk):
         self.sch_frame.grid(row=0, column=1, rowspan=4, sticky="nsew")
         # self.main_frame.grid_rowconfigure(6, weight=1)
 
-        # Calc label
+        # Schedule label
         self.sch_label = customtkinter.CTkLabel(self.sch_frame, text="Schedule",
                                                  font=customtkinter.CTkFont(size=30, weight="bold"))
-        self.sch_label.grid(row=0, column=1, padx=(0, 500), pady=(20, 400))
+        self.sch_label.place(x=20, y=20)
 
     def get_maximum_rows(self, sheet_object):
         rows = 0
