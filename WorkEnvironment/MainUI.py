@@ -2,9 +2,11 @@ import tkinter
 import tkinter.messagebox
 import customtkinter
 import os.path
+import math
 import pandas as pd
 from openpyxl import Workbook, load_workbook
 from datetime import date
+
 
 if os.path.exists("WineMakerData.xlsx"):
     book = load_workbook("WineMakerData.xlsx")
@@ -404,8 +406,8 @@ class App(customtkinter.CTk):
         self.calctabs = customtkinter.CTkTabview(self.calc_frame, width=850, height=500)
         self.calctabs.place(x=20, y=50)
         self.calctabs.add("SO2")
-        self.calctabs.add("Main")
-        self.calctabs.add("Test")
+        self.calctabs.add("Fermentation")
+        self.calctabs.add("Conversions")
 
         # Calc label
         self.calc_label = customtkinter.CTkLabel(self.calc_frame, text="Calculations",
@@ -423,7 +425,7 @@ class App(customtkinter.CTk):
             if current["B" + str(i + 2)].value == self.wine_drop.get():
                 info_index = str(i + 2)
 
-        # SO2 Calculation
+        # SO2 Calculation---------------------------------------------------------------------------------------------
         # Show Wine name
         self.s02_wine_name = customtkinter.CTkLabel(self.calctabs.tab("SO2"), text="Name:",
                                                         font=customtkinter.CTkFont(size=20, weight="bold"))
@@ -469,6 +471,150 @@ class App(customtkinter.CTk):
         self.sO2_calculate = customtkinter.CTkButton(self.calctabs.tab("SO2"), text="Calculate", command=self.calc_so2)
         self.sO2_calculate.place(x=20, y=250)
 
+        # Fermentation Calculation-----------------------------------------------------------------------------------
+        # Show Wine name
+        self.ferm_wine_name = customtkinter.CTkLabel(self.calctabs.tab("Fermentation"), text="Name:",
+                                                    font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.ferm_wine_name.place(x=20, y=0)
+
+        self.ferm_current_wine = customtkinter.CTkLabel(self.calctabs.tab("Fermentation"), text=current["B" + info_index].value)
+        self.ferm_current_wine.place(x=200, y=0)
+
+        # Show tank number
+        self.ferm_tank_num = customtkinter.CTkLabel(self.calctabs.tab("Fermentation"), text="Tank:",
+                                                   font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.ferm_tank_num.place(x=20, y=50)
+
+        self.ferm_current_tank = customtkinter.CTkLabel(self.calctabs.tab("Fermentation"), text=current["C" + info_index].value)
+        self.ferm_current_tank.place(x=200, y=50)
+
+        # Show Volume
+        self.ferm_vol_num = customtkinter.CTkLabel(self.calctabs.tab("Fermentation"), text="Volume:",
+                                                  font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.ferm_vol_num.place(x=20, y=100)
+
+        self.ferm_current_vol = customtkinter.CTkEntry(self.calctabs.tab("Fermentation"))  # , text=current["F" + info_index].value)
+        self.ferm_current_vol.place(x=200, y=100)
+        self.ferm_current_vol.insert(0, current["F" + info_index].value)
+        self.l_label = customtkinter.CTkLabel(self.calctabs.tab("Fermentation"), text="L")
+        self.l_label.place(x=350, y=100)
+        # Add Brix
+        self.ferm_brix_num = customtkinter.CTkLabel(self.calctabs.tab("Fermentation"), text="Brix:",
+                                                  font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.ferm_brix_num.place(x=20, y=150)
+        self.ferm_added_brix = customtkinter.CTkEntry(self.calctabs.tab("Fermentation"))  # , text=current["F" + info_index].value)
+        self.ferm_added_brix.place(x=200, y=150)
+        # Add Desired alcohol
+        self.ferm_alc_num = customtkinter.CTkLabel(self.calctabs.tab("Fermentation"), text="Desired Alcohol:",
+                                                    font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.ferm_alc_num.place(x=20, y=200)
+        self.ferm_des_alc = customtkinter.CTkEntry(self.calctabs.tab("Fermentation"))  # , text=current["F" + info_index].value)
+        self.ferm_des_alc.place(x=200, y=200)
+        # Add yeast per hl
+        self.ferm_alc_num = customtkinter.CTkLabel(self.calctabs.tab("Fermentation"), text="Yeast g/hL:",
+                                                   font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.ferm_alc_num.place(x=20, y=250)
+        self.yeast_drop = customtkinter.CTkComboBox(self.calctabs.tab("Fermentation"),values=["25","35"])
+        self.yeast_drop.place(x=200, y=250)
+        # Calculate button
+        self.ferm_calculate = customtkinter.CTkButton(self.calctabs.tab("Fermentation"), text="Calculate", command=self.calc_ferm)
+        self.ferm_calculate.place(x=20, y=300)
+        # Current Alcohol result
+        self.alc_result = customtkinter.CTkLabel(self.calctabs.tab("Fermentation"), text="Current Alcohol:",
+                                                   font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.alc_result.place(x=450, y=0)
+
+        self.alc_current_result = customtkinter.CTkLabel(self.calctabs.tab("Fermentation"), text=" ")
+        self.alc_current_result.place(x=630, y=0)
+        # Volume gallon result
+        self.vol_result = customtkinter.CTkLabel(self.calctabs.tab("Fermentation"), text="Volume(gal):",
+                                                   font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.vol_result.place(x=450, y=40)
+
+        self.vol_current_result = customtkinter.CTkLabel(self.calctabs.tab("Fermentation"), text=" ")
+        self.vol_current_result.place(x=630, y=40)
+        # Yeast result
+        self.yeast_result = customtkinter.CTkLabel(self.calctabs.tab("Fermentation"), text="Yeast:",
+                                                 font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.yeast_result.place(x=450, y=80)
+
+        self.yeast_current_result = customtkinter.CTkLabel(self.calctabs.tab("Fermentation"), text=" ")
+        self.yeast_current_result.place(x=630, y=80)
+        # Water result
+        self.water_result = customtkinter.CTkLabel(self.calctabs.tab("Fermentation"), text="Water needed:",
+                                                   font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.water_result.place(x=450, y=120)
+
+        self.water_current_result = customtkinter.CTkLabel(self.calctabs.tab("Fermentation"), text=" ")
+        self.water_current_result.place(x=630, y=120)
+        # Fermaid result
+        self.fermaid_lb_result = customtkinter.CTkLabel(self.calctabs.tab("Fermentation"), text="Fermaid(lbs):",
+                                                   font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.fermaid_lb_result.place(x=450, y=160)
+
+        self.fermaid_lb_current_result = customtkinter.CTkLabel(self.calctabs.tab("Fermentation"), text=" ")
+        self.fermaid_lb_current_result.place(x=630, y=160)
+        self.fermaid_g_result = customtkinter.CTkLabel(self.calctabs.tab("Fermentation"), text="Fermaid(g):",
+                                                        font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.fermaid_g_result.place(x=450, y=200)
+
+        self.fermaid_g_current_result = customtkinter.CTkLabel(self.calctabs.tab("Fermentation"), text=" ")
+        self.fermaid_g_current_result.place(x=630, y=200)
+        # Yeast Hulls result
+        self.yeasthull_lb_result = customtkinter.CTkLabel(self.calctabs.tab("Fermentation"), text="Yeast Hulls(lbs):",
+                                                        font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.yeasthull_lb_result.place(x=450, y=240)
+
+        self.yeasthull_lb_current_result = customtkinter.CTkLabel(self.calctabs.tab("Fermentation"), text=" ")
+        self.yeasthull_lb_current_result.place(x=630, y=240)
+        self.yeasthull_g_result = customtkinter.CTkLabel(self.calctabs.tab("Fermentation"), text="Yeast Hulls(g):",
+                                                       font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.yeasthull_g_result.place(x=450, y=280)
+
+        self.yeasthull_g_current_result = customtkinter.CTkLabel(self.calctabs.tab("Fermentation"), text=" ")
+        self.yeasthull_g_current_result.place(x=630, y=280)
+        # Sugar result
+        self.sugar_lb_result = customtkinter.CTkLabel(self.calctabs.tab("Fermentation"), text="Sugar(lbs):",
+                                                          font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.sugar_lb_result.place(x=450, y=320)
+
+        self.sugar_lb_current_result = customtkinter.CTkLabel(self.calctabs.tab("Fermentation"), text=" ")
+        self.sugar_lb_current_result.place(x=630, y=320)
+        self.sugar_g_result = customtkinter.CTkLabel(self.calctabs.tab("Fermentation"), text="Sugar(Kg):",
+                                                         font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.sugar_g_result.place(x=450, y=360)
+
+        self.sugar_g_current_result = customtkinter.CTkLabel(self.calctabs.tab("Fermentation"), text=" ")
+        self.sugar_g_current_result.place(x=630, y=360)
+
+        # Standard conversion Calculation-----------------------------------------------------------------------------------
+        # Show Wine name
+        self.con_vol = customtkinter.CTkLabel(self.calctabs.tab("Conversions"), text="Volume:",font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.con_vol.place(x=20, y=0)
+        self.con_current_vol = customtkinter.CTkEntry(self.calctabs.tab("Conversions"))  # , text=current["F" + info_index].value)
+        self.con_current_vol.place(x=200, y=0)
+        self.con_current_vol.insert(0, current["F" + info_index].value)
+
+        self.l_label = customtkinter.CTkLabel(self.calctabs.tab("Conversions"), text="L")
+        self.l_label.place(x=350, y=0)
+
+        self.con_drop = customtkinter.CTkComboBox(self.calctabs.tab("Conversions"), values=["g/hL", "g/L"])
+        self.con_drop.place(x=380, y=50)
+
+        self.con_den = customtkinter.CTkLabel(self.calctabs.tab("Conversions"), text="Density:",font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.con_den.place(x=20, y=50)
+        self.con_current_den = customtkinter.CTkEntry(self.calctabs.tab("Conversions"))  # , text=current["F" + info_index].value)
+        self.con_current_den.place(x=200, y=50)
+
+        self.con_ans_label = customtkinter.CTkLabel(self.calctabs.tab("Conversions"), text="Grams", font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.con_ans_label.place(x=20, y=100)
+        self.con_ans = customtkinter.CTkLabel(self.calctabs.tab("Conversions"), text=" ")
+        self.con_ans.place(x=200, y=100)
+
+        self.con_calculate = customtkinter.CTkButton(self.calctabs.tab("Conversions"), text="Calculate", command=self.calc_con)
+        self.con_calculate.place(x=20, y=150)
+
+
 
         # # Multiplication test
         # self.entry1 = customtkinter.CTkEntry(self.calctabs.tab("SO2"), placeholder_text="Num 1")
@@ -500,10 +646,33 @@ class App(customtkinter.CTk):
         self.calc_screen()
 
     def calc_so2(self):
-        self.s02_current_result.configure(text=str(((float(self.s02_current_vol.get())/100))*((float(self.s02_added_s02.get())/10)*2))+ " g")
+        self.s02_current_result.configure(text=str(self.round_half_up(((float(self.s02_current_vol.get())/100))*((float(self.s02_added_s02.get())/10)*2)))+ " g")
 
-    def mult(self):
-        self.an_label.configure(text=(str(int(self.entry1.get()) * int(self.entry2.get()))))
+    def calc_ferm(self):
+        cur_alc = float(self.ferm_added_brix.get())*.58
+        self.alc_current_result.configure(text=str(self.round_half_up(cur_alc,4)))
+        vol_gal = float(self.ferm_current_vol.get())*.26417205
+        self.vol_current_result.configure(text=str(self.round_half_up(vol_gal,2)) + "  Gallons")
+        added_yeast = (float(self.ferm_current_vol.get())/100)*float(self.yeast_drop.get())
+        self.yeast_current_result.configure(text=str(self.round_half_up(added_yeast,4)))
+        self.water_current_result.configure(text=str(self.round_half_up((added_yeast/100),4)) + " L")
+        fermaid_lb = (vol_gal/1000)*2
+        self.fermaid_lb_current_result.configure(text=str(self.round_half_up(fermaid_lb,2)) + " lbs")
+        self.fermaid_g_current_result.configure(text=str(self.round_half_up((fermaid_lb * 453.59237),2)) + " g")
+        yeasthulls_lb = (vol_gal / 1000) * 3
+        self.yeasthull_lb_current_result.configure(text=str(self.round_half_up(yeasthulls_lb, 2)) + " lbs")
+        self.yeasthull_g_current_result.configure(text=str(self.round_half_up((yeasthulls_lb * 453.59237), 2)) + " g")
+        sugar_kg = ((float(self.ferm_des_alc.get())-cur_alc)*1.8)*(float(self.ferm_current_vol.get())/100)
+        self.sugar_lb_current_result.configure(text=str(self.round_half_up(((sugar_kg/453.59237)*1000), 4)) + " lbs")
+        self.sugar_g_current_result.configure(text=str(self.round_half_up((sugar_kg), 4)) + " Kg")
+
+    def calc_con(self):
+        if(self.con_drop.get() == "g/hL"):
+            self.con_ans.configure(text=str(self.round_half_up((float(self.con_current_vol.get())/100)*float(self.con_current_den.get()))) + " g")
+        elif(self.con_drop.get() == "g/L"):
+            self.con_ans.configure(text=str(self.round_half_up(float(self.con_current_vol.get()) * float(self.con_current_den.get()))) + " g")
+    # def mult(self):
+    #     self.an_label.configure(text=(str(int(self.entry1.get()) * int(self.entry2.get()))))
 
 
 
@@ -525,6 +694,10 @@ class App(customtkinter.CTk):
             if not all(col.value is None for col in row):
                 rows += 1
         return rows
+
+    def round_half_up(slef, n, decimals=2):
+        multiplier = 10 ** decimals
+        return math.floor(n * multiplier + 0.5) / multiplier
 
 
 if __name__ == "__main__":
