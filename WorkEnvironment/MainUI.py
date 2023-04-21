@@ -4,6 +4,7 @@ import customtkinter
 import os.path
 import math
 import pandas as pd
+import self as self
 from openpyxl import Workbook, load_workbook
 from datetime import date
 
@@ -422,6 +423,10 @@ class App(customtkinter.CTk):
                                                   font=customtkinter.CTkFont(size=30, weight="bold"))
         self.edit_wines_label.place(x=20, y=20)
 
+        # Delete button
+        self.delete_btn = customtkinter.CTkButton(self.edit_wine_frame, text="Delete wine", command=self.you_sure, fg_color="red", hover_color="red")
+        self.delete_btn.place(x=700, y=25)
+
         # Input Wine name
         self.edit_name = customtkinter.CTkLabel(self.edit_wine_frame, text="Name:",
                                                   font=customtkinter.CTkFont(size=20, weight="bold"))
@@ -516,6 +521,21 @@ class App(customtkinter.CTk):
         current["H" + str(ind)] = float(self.edit_so2_entry.get())
         book.save("WineMakerData.xlsx")
         self.wine_screen()
+
+    def delete_wine(self):
+        current.delete_rows(int(self.info_index))
+        book.save("WineMakerData.xlsx")
+        self.wine_screen()
+
+    def you_sure(self):
+        self.delete1_btn = customtkinter.CTkButton(self.edit_wine_frame, text="Are you sure?", command=self.you_really_sure,
+                                                  fg_color="red", hover_color="red")
+        self.delete1_btn.place(x=700, y=500)
+
+    def you_really_sure(self):
+        self.delete2_btn = customtkinter.CTkButton(self.edit_wine_frame, text="Final chance", command=self.delete_wine,
+                                                  fg_color="red", hover_color="red")
+        self.delete2_btn.place(x=700, y=250)
 
     def calc_screen(self):
         # Create main frame
