@@ -4,14 +4,17 @@ import customtkinter
 import os.path
 import math
 import pandas as pd
-import self as self
+# import self as self
 from openpyxl import Workbook, load_workbook
 from datetime import date
+# from pytube import *
 
 
 if os.path.exists("WineMakerData.xlsx"):
     book = load_workbook("WineMakerData.xlsx")
     current = book.active
+    sch = book['Schedule']
+    todo = book["Todo"]
 
 else:
     book = Workbook()
@@ -27,6 +30,9 @@ else:
     current["H1"] = "SO2"
 
     sch = book.create_sheet("Schedule")
+    sch = book['Schedule']
+    book.create_sheet("Todo")
+    todo = book["Todo"]
     book.save("WineMakerData.xlsx")
     # ws1 = wb.create_sheet("Wine Data")
 
@@ -114,6 +120,8 @@ class App(customtkinter.CTk):
         print("sidebar_button click")
 
     def home_screen(self):
+        book.active = book['WineData']
+        book.save("WineMakerData.xlsx")
         self.main_frame = customtkinter.CTkFrame(self, width=120, corner_radius=0)
         self.main_frame.grid(row=0, column=1, rowspan=4, sticky="nsew")
         # self.main_frame.grid_rowconfigure(6, weight=1)
@@ -129,6 +137,8 @@ class App(customtkinter.CTk):
         self.todo_label = customtkinter.CTkLabel(self.main_frame, text="To-Do",
                                                  font=customtkinter.CTkFont(size=30, weight="bold"))
         self.todo_label.place(x=0,y=70)
+        self.add_todo = customtkinter.CTkButton(self.main_frame, text="+", width=20, height=20, command=self.create_todo)
+        self.add_todo.place(x=100, y=80)
         # to-do list
         self.scrollable_todo = customtkinter.CTkScrollableFrame(self.main_frame, width=450, height=400)
         self.scrollable_todo.place(x=0, y=120)
@@ -136,14 +146,17 @@ class App(customtkinter.CTk):
         # Sets info for index purposes
         self.info_name = current["B2"].value
 
-        for i in range(4):
+        for i in range(self.get_maximum_rows(sheet_object=todo)):
             # wine
-            todo = customtkinter.CTkLabel(master=self.scrollable_todo, text=str(i+1)+") Whatever to-do",
+            todo_list = customtkinter.CTkLabel(master=self.scrollable_todo, text=str(i+1)+") " + str(todo["A" + str(i+1)].value),
                                                      font=customtkinter.CTkFont(size=20, weight="bold"))
-            todo.grid(row=i*2, column=0, padx=10, pady=(0, 20))
+            todo_list.grid(row=i, column=2, padx=0, pady=(0, 20))
+            self.scrollable_todo.columnconfigure(1, weight=1)
 
-            complete = customtkinter.CTkButton(self.scrollable_todo, text="Completed")
-            complete.grid(row=(i*2)+1, column=0, padx=10, pady=(0, 20))
+            complete = customtkinter.CTkButton(self.scrollable_todo, text="Done", width=60, height=30)
+            complete.grid(row=i, column=0, padx=10, pady=(0, 20))
+
+
 
         # Tank occupancy--------------------------------------------------------------------------------------
         #Tank label
@@ -172,9 +185,33 @@ class App(customtkinter.CTk):
                 self.volumes[current["C" + str(i+2)].value-1].configure(text=str(current["F" + str(i+2)].value) + " L", font=customtkinter.CTkFont(size=20, weight="bold"))
 
 
+    def create_todo(self):
+        self.todo_frame = customtkinter.CTkFrame(self, width=120, corner_radius=0)
+        self.todo_frame.grid(row=0, column=1, rowspan=4, sticky="nsew")
+
+        self.add_todo_label = customtkinter.CTkLabel(self.todo_frame, text="New To-Do",
+                                                 font=customtkinter.CTkFont(size=30, weight="bold"))
+        self.add_todo_label.place(x=0, y=20)
+
+        self.info_label = customtkinter.CTkLabel(self.todo_frame, text="To-do Information",
+                                                     font=customtkinter.CTkFont(size=20))
+        self.info_label.place(x=0, y=70)
+
+        self.todo_item = customtkinter.CTkTextbox(self.todo_frame, width=500, height=200)
+        self.todo_item.place(x=0, y=100)
+
+        self.confirm_todo = customtkinter.CTkButton(self.todo_frame, text="Confirm", command=self.new_todo)
+        self.confirm_todo.place(x=0, y=350)
+
+    def new_todo(self):
+        todo["A" + str(self.get_maximum_rows(sheet_object=todo)+1)] = self.todo_item.get("0.0", "end")
+        book.save("WineMakerData.xlsx")
+        self.home_screen()
 
 
     def wine_screen(self):
+        book.active = book['WineData']
+        book.save("WineMakerData.xlsx")
         # Create main frame
         self.wine_frame = customtkinter.CTkFrame(self, width=120, corner_radius=0)
         self.wine_frame.grid(row=0, column=1, rowspan=4, sticky="nsew")
@@ -538,6 +575,8 @@ class App(customtkinter.CTk):
         self.delete2_btn.place(x=700, y=250)
 
     def calc_screen(self):
+        book.active = book['WineData']
+        book.save("WineMakerData.xlsx")
         # Create main frame
         self.calc_frame = customtkinter.CTkFrame(self, width=120, corner_radius=0)
         self.calc_frame.grid(row=0, column=1, rowspan=4, sticky="nsew")
@@ -555,9 +594,7 @@ class App(customtkinter.CTk):
         self.calc_label.place(x=20, y=20)
 
         # Wine dropdown bar
-        self.wine_drop = customtkinter.CTkComboBox(self.calc_frame,
-                                                   values=[current["B" + str(i + 2)].value for i in
-                                                           range(self.get_maximum_rows(sheet_object=current) - 1)],
+        self.wine_drop = customtkinter.CTkComboBox(self.calc_frame,values=[current["B" + str(i + 2)].value for i in range(self.get_maximum_rows(sheet_object=current) - 1)],
                                                    command=self.set_calc_info)
         self.wine_drop.place(x=320, y=25)
         self.wine_drop.set(self.info_name)
@@ -827,6 +864,51 @@ class App(customtkinter.CTk):
         self.sch_label = customtkinter.CTkLabel(self.sch_frame, text="Schedule",
                                                  font=customtkinter.CTkFont(size=30, weight="bold"))
         self.sch_label.place(x=20, y=20)
+        # Set up start date combo boxes
+        today = date.today()
+        self.start_label = customtkinter.CTkLabel(self.sch_frame, text="Start date",
+                                                font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.start_label.place(x=20, y=70)
+        self.start_month_drop = customtkinter.CTkComboBox(self.sch_frame, values=["01", "02", "03", "04", "05", "06", "07",
+                                                                  "08", "09", "10", "11", "12"])
+        self.start_month_drop.place(x=20, y=100)
+        self.start_month_drop.set(today.month)
+        self.start_day_drop = customtkinter.CTkComboBox(self.sch_frame, values=[str(i+1) for i in range(31)])
+        self.start_day_drop.place(x=170, y=100)
+        self.start_day_drop.set(today.day)
+        self.start_year_drop = customtkinter.CTkComboBox(self.sch_frame, values=[str(i + 2023) for i in range(15)])
+        self.start_year_drop.place(x=320, y=100)
+        self.start_year_drop.set(today.year)
+
+        # Set up end date combo boxes
+        self.end_label = customtkinter.CTkLabel(self.sch_frame, text="End date",
+                                                  font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.end_label.place(x=20, y=170)
+        self.end_month_drop = customtkinter.CTkComboBox(self.sch_frame,
+                                                          values=["01", "02", "03", "04", "05", "06", "07",
+                                                                  "08", "09", "10", "11", "12"])
+        self.end_month_drop.place(x=20, y=200)
+        self.end_month_drop.set(today.month) # (str((int(today.month)+3) % 12))
+        self.end_day_drop = customtkinter.CTkComboBox(self.sch_frame, values=[str(i + 1) for i in range(31)])
+        self.end_day_drop.place(x=170, y=200)
+        self.end_day_drop.set(today.day)
+        self.end_year_drop = customtkinter.CTkComboBox(self.sch_frame, values=[str(i + 2023) for i in range(15)])
+        self.end_year_drop.place(x=320, y=200)
+        self.end_year_drop.set(today.year)
+
+        self.generate_sch = customtkinter.CTkButton(self.sch_frame, text="Generate Schedule", command=self.gen_sch)
+        self.generate_sch.place(x=20, y=300)
+
+
+    def gen_sch(self):
+        temp_var = self.get_maximum_rows(sheet_object=current) - 1
+        self.start_date = date(int(self.start_year_drop.get()), int(self.start_month_drop.get()),int(self.start_day_drop.get()))
+        # Generate first racking
+        for i in range(temp_var):
+            sch["A" + str(i+1)] = self.start_date
+
+        book.save("WineMakerData.xlsx")
+
 
     def get_maximum_rows(self, sheet_object):
         rows = 0
