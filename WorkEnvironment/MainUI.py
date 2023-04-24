@@ -80,9 +80,9 @@ class App(customtkinter.CTk):
         self.sch_btn.grid(row=4, column=0, padx=20, pady=10)
         self.sch_btn.configure(text="Schedule")
         # Create Notes button
-        self.note_btn = customtkinter.CTkButton(self.sidebar_frame, command=self.sidebar_button_event)
-        self.note_btn.grid(row=5, column=0, padx=20, pady=10)
-        self.note_btn.configure(text="Notes")
+        # self.note_btn = customtkinter.CTkButton(self.sidebar_frame, command=self.sidebar_button_event)
+        # self.note_btn.grid(row=5, column=0, padx=20, pady=10)
+        # self.note_btn.configure(text="Notes")
         # Create apperance label
         self.appearance_mode_label = customtkinter.CTkLabel(self.sidebar_frame, text="Appearance Mode:", anchor="w")
         self.appearance_mode_label.grid(row=7, column=0, padx=20, pady=(10, 0))
@@ -140,21 +140,25 @@ class App(customtkinter.CTk):
         self.add_todo = customtkinter.CTkButton(self.main_frame, text="+", width=20, height=20, command=self.create_todo)
         self.add_todo.place(x=100, y=80)
         # to-do list
-        self.scrollable_todo = customtkinter.CTkScrollableFrame(self.main_frame, width=450, height=400)
+        self.scrollable_todo = customtkinter.CTkScrollableFrame(self.main_frame, width=500, height=400)
         self.scrollable_todo.place(x=0, y=120)
 
         # Sets info for index purposes
         self.info_name = current["B2"].value
 
+        self.todo_btns = []
+
         for i in range(self.get_maximum_rows(sheet_object=todo)):
             # wine
             todo_list = customtkinter.CTkLabel(master=self.scrollable_todo, text=str(i+1)+") " + str(todo["A" + str(i+1)].value),
                                                      font=customtkinter.CTkFont(size=20, weight="bold"))
-            todo_list.grid(row=i, column=2, padx=0, pady=(0, 20))
+            todo_list.grid(row=i, column=0, padx=0, pady=(0, 20))
             self.scrollable_todo.columnconfigure(1, weight=1)
 
-            complete = customtkinter.CTkButton(self.scrollable_todo, text="Done", width=60, height=30)
-            complete.grid(row=i, column=0, padx=10, pady=(0, 20))
+            complete = customtkinter.CTkButton(self.scrollable_todo, text="Done" + str(i+1), width=60, height=30, command=lambda c=i: self.delete_todo(c))
+            complete.grid(row=i, column=2, padx=10, pady=(0, 20))
+
+            self.todo_btns.append(complete)
 
 
 
@@ -162,17 +166,17 @@ class App(customtkinter.CTk):
         #Tank label
         self.tank_home_label = customtkinter.CTkLabel(self.main_frame, text="Tanks:",
                                                  font=customtkinter.CTkFont(size=30, weight="bold"))
-        self.tank_home_label.place(x=500, y=70)
+        self.tank_home_label.place(x=540, y=70)
         # Loop for tank numbers
         self.tanks = []
         self.volumes = []
         for i in range(11):
             # Main tank label
             home_tank_num = customtkinter.CTkLabel(self.main_frame, text="Tank " + str(i+1) + ":", font=customtkinter.CTkFont(size=20))
-            home_tank_num.place(x=500, y=((120)+(i*40)))
+            home_tank_num.place(x=550, y=((120)+(i*40)))
             # Wine name
             home_wine_name = customtkinter.CTkLabel(self.main_frame, text="empty") # , font=customtkinter.CTkFont(size=20))
-            home_wine_name.place(x=650, y=((120)+(i*40)))
+            home_wine_name.place(x=670, y=((120)+(i*40)))
             self.tanks.append(home_wine_name)
             # Volume at tank
             home_wine_vol = customtkinter.CTkLabel(self.main_frame,text="0 L")  # , font=customtkinter.CTkFont(size=20))
@@ -205,6 +209,11 @@ class App(customtkinter.CTk):
 
     def new_todo(self):
         todo["A" + str(self.get_maximum_rows(sheet_object=todo)+1)] = self.todo_item.get("0.0", "end")
+        book.save("WineMakerData.xlsx")
+        self.home_screen()
+
+    def delete_todo(self, indx):
+        todo.delete_rows(indx+1)
         book.save("WineMakerData.xlsx")
         self.home_screen()
 
@@ -902,12 +911,178 @@ class App(customtkinter.CTk):
 
     def gen_sch(self):
         temp_var = self.get_maximum_rows(sheet_object=current) - 1
-        self.start_date = date(int(self.start_year_drop.get()), int(self.start_month_drop.get()),int(self.start_day_drop.get()))
+        self.start_date = date(int(self.start_year_drop.get()), int(self.start_month_drop.get()), int(self.start_day_drop.get()))
+        self.end_date = date(int(self.end_year_drop.get()), int(self.end_month_drop.get()), int(self.end_day_drop.get()))
+        overall_index = 0
         # Generate first racking
+        self.first_rack = self.add_date(14)
         for i in range(temp_var):
-            sch["A" + str(i+1)] = self.start_date
+            sch["A" + str(i+1)] = str(self.first_rack.year)+"-"+str(self.first_rack.month)+"-"+(str(int(self.first_rack.day)+i))
+            sch["B" + str(i+1)] = "First racking of " + current["B" + str(i+2)].value
+            overall_index += 1
+        # Generate Second racking
+        self.second_rack = self.add_date(28)
+        for i in range(temp_var):
+            sch["A" + str(overall_index + 1)] = str(self.second_rack.year) + "-" + str(self.second_rack.month) + "-" + (str(int(self.second_rack.day) + i))
+            sch["B" + str(overall_index + 1)] = "Second racking of " + current["B" + str(i + 2)].value
+            overall_index += 1
+
+        # Generate Final filtering
+        self.final_filter = self.sub_date(3)
+        for i in range(temp_var):
+            sch["A" + str(overall_index + 1)] = str(self.final_filter.year) + "-" + str(self.final_filter.month) + "-" + (str(int(self.final_filter.day)))
+            sch["B" + str(overall_index + 1)] = "Final Filtering of " + current["B" + str(i + 2)].value
+            overall_index += 1
 
         book.save("WineMakerData.xlsx")
+
+    def add_date(self, added):  # This function adds "added" days to the start date for scheduling
+        new_day = int(self.start_day_drop.get()) + added
+        new_month = int(self.start_month_drop.get())
+        new_year = int(self.start_year_drop.get())
+        if (new_month == 1):
+            if (new_day > 31):
+                new_day = new_day - 31
+                new_month = new_month + 1
+
+        if(new_month == 2 and new_year%4):
+            if(new_day > 29):
+                new_day = new_day - 29
+                new_month = new_month + 1
+        elif(new_month == 2):
+            if(new_day > 28):
+                new_day = new_day - 28
+                new_month = new_month + 1
+
+        if (new_month == 3):
+            if (new_day > 31):
+                new_day = new_day - 31
+                new_month = new_month + 1
+
+        if (new_month == 4):
+            if (new_day > 30):
+                new_day = new_day - 30
+                new_month = new_month + 1
+
+        if (new_month == 5):
+            if (new_day > 31):
+                new_day = new_day - 31
+                new_month = new_month + 1
+
+        if (new_month == 6):
+            if (new_day > 30):
+                new_day = new_day - 30
+                new_month = new_month + 1
+
+        if (new_month == 7):
+            if (new_day > 31):
+                new_day = new_day - 31
+                new_month = new_month + 1
+
+        if (new_month == 8):
+            if (new_day > 31):
+                new_day = new_day - 31
+                new_month = new_month + 1
+
+        if (new_month == 9):
+            if (new_day > 30):
+                new_day = new_day - 30
+                new_month = new_month + 1
+
+        if (new_month == 10):
+            if (new_day > 31):
+                new_day = new_day - 31
+                new_month = new_month + 1
+
+        if (new_month == 11):
+            if (new_day > 30):
+                new_day = new_day - 30
+                new_month = new_month + 1
+
+        if (new_month == 12):
+            if (new_day > 31):
+                new_day = new_day - 31
+                new_month = 1
+                new_year= new_year + 1
+
+        return date(new_year, new_month, new_day)
+
+    def sub_date(self, sub):  # This function adds "added" days to the start date for scheduling
+        new_day = int(self.end_day_drop.get())
+        new_month = int(self.end_month_drop.get())
+        new_year = int(self.end_year_drop.get())
+
+        while(sub > 0):
+
+            if((new_day-sub) >= 0 ):
+                new_day = new_day - sub
+                sub = 0
+            else:
+                if (new_month == 12):
+                    sub = sub - new_day
+                    new_month = new_month - 1
+                    new_day = 30
+
+                elif (new_month == 11):
+                    sub = sub - new_day
+                    new_month = new_month - 1
+                    new_day = 31
+
+                elif (new_month == 10):
+                    sub = sub - new_day
+                    new_month = new_month - 1
+                    new_day = 30
+
+                elif (new_month == 9):
+                    sub = sub - new_day
+                    new_month = new_month - 1
+                    new_day = 31
+
+                elif (new_month == 8):
+                    sub = sub - new_day
+                    new_month = new_month - 1
+                    new_day = 31
+
+                elif (new_month == 7):
+                    sub = sub - new_day
+                    new_month = new_month - 1
+                    new_day = 30
+
+                elif (new_month == 6):
+                    sub = sub - new_day
+                    new_month = new_month - 1
+                    new_day = 31
+
+                elif (new_month == 5):
+                    sub = sub - new_day
+                    new_month = new_month - 1
+                    new_day = 30
+
+                elif (new_month == 4):
+                    sub = sub - new_day
+                    new_month = new_month - 1
+                    new_day = 31
+
+                elif (new_month == 3):
+                    sub = sub - new_day
+                    new_month = new_month - 1
+                    if (new_month == 2 and new_year % 4):
+                        new_day = 29
+                    elif (new_month == 2):
+                        new_day = 28
+
+                elif (new_month == 2):
+                    sub = sub - new_day
+                    new_month = new_month - 1
+                    new_day = 31
+
+                elif (new_month == 1):
+                    sub = sub - new_day
+                    new_month = 12
+                    new_day = 31
+                    new_year = new_year - 1
+
+        return date(new_year, new_month, new_day)
 
 
     def get_maximum_rows(self, sheet_object):
