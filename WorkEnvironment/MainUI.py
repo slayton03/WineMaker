@@ -76,7 +76,7 @@ class App(customtkinter.CTk):
         self.calc_btn.grid(row=3, column=0, padx=20, pady=10)
         self.calc_btn.configure(text="Calculations")
         # Create Schedule button
-        self.sch_btn = customtkinter.CTkButton(self.sidebar_frame, command=self.sch_screen)
+        self.sch_btn = customtkinter.CTkButton(self.sidebar_frame, command=self.schedule_page)
         self.sch_btn.grid(row=4, column=0, padx=20, pady=10)
         self.sch_btn.configure(text="Schedule")
         # Create Notes button
@@ -142,6 +142,26 @@ class App(customtkinter.CTk):
         # to-do list
         self.scrollable_todo = customtkinter.CTkScrollableFrame(self.main_frame, width=500, height=400)
         self.scrollable_todo.place(x=0, y=120)
+
+        # # Set todos from schedule
+        # today = date.today()
+        # for i in range(self.get_maximum_rows(sheet_object=sch)):
+        #     if(int(sch["A" + str(i + 1)].value[0]+sch["A" + str(i + 1)].value[1]+sch["A" + str(i + 1)].value[2]+sch["A" + str(i + 1)].value[3]) <= today.year):
+        #         if(sch["A" + str(i + 1)].value[6] == '-'):
+        #             if (int(sch["A" + str(i + 1)].value[5]) <= today.month):
+        #                 if(len(sch["A" + str(i + 1)].value) >= 8):
+        #                     if(int(sch["A" + str(i + 1)].value[7]) <= today.month):
+        #                         todo["A" + str(self.get_maximum_rows(sheet_object=todo) + 1)] = sch["B" + str(i + 1)].value
+        #                 elif(len(sch["A" + str(i + 1)].value) >= 9):
+        #                     if (int(sch["A" + str(i + 1)].value[7] + sch["A" + str(i + 1)].value[8]) <= today.month):
+        #                         todo["A" + str(self.get_maximum_rows(sheet_object=todo) + 1 )] = sch["B" + str(i + 1)].value
+        #         else:
+        #             if(len(sch["A" + str(i + 1)].value) >= 9):
+        #                 if (int(sch["A" + str(i + 1)].value[8]) <= today.month):
+        #                     todo["A" + str(self.get_maximum_rows(sheet_object=todo) + 1 )] = sch["B" + str(i + 1)].value
+        #             elif(len(sch["A" + str(i + 1)].value) >= 10):
+        #                 if (int(sch["A" + str(i + 1)].value[8] + sch["A" + str(i + 1)].value[9]) <= today.month):
+        #                     todo["A" + str(self.get_maximum_rows(sheet_object=todo) + 1)] = sch["B" + str(i + 1)].value
 
         # Sets info for index purposes
         self.info_name = current["B2"].value
@@ -935,6 +955,40 @@ class App(customtkinter.CTk):
             overall_index += 1
 
         book.save("WineMakerData.xlsx")
+
+        self.schedule_page()
+
+    def schedule_page(self):
+        self.sch_page_frame = customtkinter.CTkFrame(self, width=120, corner_radius=0)
+        self.sch_page_frame.grid(row=0, column=1, rowspan=4, sticky="nsew")
+        # self.main_frame.grid_rowconfigure(6, weight=1)
+
+        # Schedule label
+        self.sch_page_label = customtkinter.CTkLabel(self.sch_page_frame, text="Schedule", font=customtkinter.CTkFont(size=30, weight="bold"))
+        self.sch_page_label.place(x=0, y=20)
+
+        # New Schedule button
+        self.new_sch = customtkinter.CTkButton(self.sch_page_frame, text="New Schedule", command=self.sch_screen)
+        self.new_sch.place(x=550, y=20)
+
+        # Scroll frame
+        self.scrollable_sch = customtkinter.CTkScrollableFrame(self.sch_page_frame, width=700, height=450)
+        self.scrollable_sch.place(x=0, y=70)
+        # Generate schedule layout
+        for i in range(self.get_maximum_rows(sheet_object=sch)):
+            sch_date = customtkinter.CTkLabel(self.scrollable_sch, text=sch["A" + str(i + 1)].value + ":", font=customtkinter.CTkFont(size=20, weight="bold"))
+            sch_date.grid(row=i, column=0, padx=0, pady=(0, 20))
+
+            self.scrollable_sch.columnconfigure(1, weight=1)
+
+            sch_data = customtkinter.CTkLabel(self.scrollable_sch, text=sch["B" + str(i + 1)].value, font=customtkinter.CTkFont(size=20, weight="bold"))
+            sch_data.grid(row=i, column=2, padx=150, pady=(0, 20))
+
+        if(sch["A1"].value == None):
+            self.sch_screen()
+
+
+
 
     def add_date(self, added):  # This function adds "added" days to the start date for scheduling
         new_day = int(self.start_day_drop.get()) + added
