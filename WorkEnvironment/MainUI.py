@@ -1012,6 +1012,7 @@ class App(customtkinter.CTk):
             sch_data = customtkinter.CTkLabel(self.scrollable_sch, text=sch["B" + str(i + 1)].value, font=customtkinter.CTkFont(size=20, weight="bold"))
             sch_data.grid(row=i, column=2, padx=150, pady=(0, 20))
 
+        # Returns to create new schedule screen if no schedule exists
         if(sch["A1"].value == None):
             self.sch_screen()
 
