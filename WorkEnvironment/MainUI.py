@@ -328,8 +328,7 @@ class App(customtkinter.CTk):
             ph.grid(row=i, column=8, padx=8, pady=(0, 20))
             self.scrollable_frame.columnconfigure(9, weight=1)
             # SO2
-            so2 = customtkinter.CTkLabel(master=self.scrollable_frame, text=current["H" + str(i + 2)].value,
-                                        font=customtkinter.CTkFont(size=20, weight="bold"))
+            so2 = customtkinter.CTkLabel(master=self.scrollable_frame, text=str(current["H" + str(i + 2)].value) + " ppm", font=customtkinter.CTkFont(size=20, weight="bold"))
             so2.grid(row=i, column=10, padx=10, pady=(0, 20))
 
             # edit button
@@ -371,6 +370,9 @@ class App(customtkinter.CTk):
         self.vol_entry = customtkinter.CTkEntry(self.add_wine_frame, placeholder_text="Volume")
         self.vol_entry.place(x=120, y=200)
 
+        self.vol_l_label = customtkinter.CTkLabel(self.add_wine_frame, text=" L", font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.vol_l_label.place(x=270, y=200)
+
         # Input Sugar
         self.new_sugar = customtkinter.CTkLabel(self.add_wine_frame, text="Sugar:",
                                                font=customtkinter.CTkFont(size=20, weight="bold"))
@@ -378,6 +380,9 @@ class App(customtkinter.CTk):
 
         self.sugar_entry = customtkinter.CTkEntry(self.add_wine_frame, placeholder_text="Sugar")
         self.sugar_entry.place(x=120, y=250)
+
+        self.sugar_label = customtkinter.CTkLabel(self.add_wine_frame, text=" g/L", font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.sugar_label.place(x=270, y=250)
 
         # Input Wine pH
         self.new_ph = customtkinter.CTkLabel(self.add_wine_frame, text="pH:",
@@ -400,6 +405,9 @@ class App(customtkinter.CTk):
 
         self.so2_entry = customtkinter.CTkEntry(self.add_wine_frame, placeholder_text="SO2")
         self.so2_entry.place(x=120, y=400)
+
+        self.so2_ppm_label = customtkinter.CTkLabel(self.add_wine_frame, text=" ppm", font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.so2_ppm_label.place(x=270, y=400)
         #Confirm Button
         self.confirm_btn = customtkinter.CTkButton(self.add_wine_frame, text="Confirm", command=self.confirm_add)
         self.confirm_btn.place(x=20, y=450)
@@ -446,7 +454,7 @@ class App(customtkinter.CTk):
                                               font=customtkinter.CTkFont(size=20, weight="bold"))
         self.vol_num.place(x=20, y=200)
 
-        self.current_vol = customtkinter.CTkLabel(self.wine_info_frame, text=current["F" + self.info_index].value)
+        self.current_vol = customtkinter.CTkLabel(self.wine_info_frame, text=str(current["F" + self.info_index].value) + " L")
         self.current_vol.place(x=120, y=200)
 
         # Show Sugar
@@ -454,7 +462,7 @@ class App(customtkinter.CTk):
                                                 font=customtkinter.CTkFont(size=20, weight="bold"))
         self.sugar_num.place(x=20, y=250)
 
-        self.current_sugar = customtkinter.CTkLabel(self.wine_info_frame,text=current["D" + self.info_index].value)
+        self.current_sugar = customtkinter.CTkLabel(self.wine_info_frame,text=str(current["D" + self.info_index].value) + " g/L")
         self.current_sugar.place(x=120, y=250)
 
         # Show Wine pH
@@ -476,7 +484,7 @@ class App(customtkinter.CTk):
                                              font=customtkinter.CTkFont(size=20, weight="bold"))
         self.so2_num.place(x=20, y=400)
 
-        self.current_so2 = customtkinter.CTkLabel(self.wine_info_frame, text=current["H" + self.info_index].value)
+        self.current_so2 = customtkinter.CTkLabel(self.wine_info_frame, text=str(current["H" + self.info_index].value) + " ppm")
         self.current_so2.place(x=120, y=400)
 
     def edit_wine(self):
@@ -521,6 +529,9 @@ class App(customtkinter.CTk):
         self.edit_vol_entry.place(x=120, y=200)
         self.edit_vol_entry.insert(0, current["F" + self.info_index].value)
 
+        self.edit_l_label = customtkinter.CTkLabel(self.edit_wine_frame, text=" L", font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.edit_l_label.place(x=270, y=200)
+
         # Input Sugar
         self.edit_new_sugar = customtkinter.CTkLabel(self.edit_wine_frame, text="Sugar:",
                                                font=customtkinter.CTkFont(size=20, weight="bold"))
@@ -529,6 +540,9 @@ class App(customtkinter.CTk):
         self.edit_sugar_entry = customtkinter.CTkEntry(self.edit_wine_frame, placeholder_text="Sugar")
         self.edit_sugar_entry.place(x=120, y=250)
         self.edit_sugar_entry.insert(0, current["D" + self.info_index].value)
+
+        self.edit_g_label = customtkinter.CTkLabel(self.edit_wine_frame, text=" g/L", font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.edit_g_label.place(x=270, y=250)
 
         # Input Wine pH
         self.edit_new_ph = customtkinter.CTkLabel(self.edit_wine_frame, text="pH:", font=customtkinter.CTkFont(size=20, weight="bold"))
@@ -553,6 +567,9 @@ class App(customtkinter.CTk):
         self.edit_so2_entry = customtkinter.CTkEntry(self.edit_wine_frame, placeholder_text="SO2")
         self.edit_so2_entry.place(x=120, y=400)
         self.edit_so2_entry.insert(0, current["H" + self.info_index].value)
+
+        self.edit_so2_label = customtkinter.CTkLabel(self.edit_wine_frame, text=" ppm", font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.edit_so2_label.place(x=270, y=400)
         #Confirm Button
         self.edit_confirm_btn = customtkinter.CTkButton(self.edit_wine_frame, text="Confirm", command=self.confirm_edit)
         self.edit_confirm_btn.place(x=20, y=450)
@@ -562,6 +579,22 @@ class App(customtkinter.CTk):
         self.wine_info()
     def confirm_add(self):
         ind = self.get_maximum_rows(sheet_object=current)+1
+
+        try:
+            int(self.vol_entry.get())
+        except ValueError:
+            # Error message
+            self.error_vol = customtkinter.CTkLabel(self.add_wine_frame, text="Error, must input a number")
+            self.error_vol.place(x=350, y=200)
+            return
+
+        try:
+            int(self.tank_entry.get())
+        except ValueError:
+            # Error message
+            self.error_tank = customtkinter.CTkLabel(self.add_wine_frame, text="Error, must input a number")
+            self.error_tank.place(x=350, y=150)
+            return
 
         current["A" + str(ind)] = ind-1
         current["B" + str(ind)] = self.name_entry.get()
@@ -576,6 +609,22 @@ class App(customtkinter.CTk):
 
     def confirm_edit(self):
         ind = int(self.info_index)
+
+        try:
+            int(self.edit_vol_entry.get())
+        except ValueError:
+            # Error message
+            self.error_vol = customtkinter.CTkLabel(self.edit_wine_frame, text="Error, must input a number")
+            self.error_vol.place(x=350, y=200)
+            return
+
+        try:
+            int(self.edit_tank_entry.get())
+        except ValueError:
+            # Error message
+            self.error_tank = customtkinter.CTkLabel(self.edit_wine_frame, text="Error, must input a number")
+            self.error_tank.place(x=350, y=150)
+            return
 
         current["A" + str(ind)] = ind-1
         current["B" + str(ind)] = self.edit_name_entry.get()
