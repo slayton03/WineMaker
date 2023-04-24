@@ -947,6 +947,34 @@ class App(customtkinter.CTk):
             sch["B" + str(overall_index + 1)] = "Second racking of " + current["B" + str(i + 2)].value
             overall_index += 1
 
+        # Generate Bentonite Addition
+        self.add_bent = self.sub_date(30)
+        for i in range(temp_var):
+            sch["A" + str(overall_index + 1)] = str(self.add_bent.year) + "-" + str(self.add_bent.month) + "-" + (str(int(self.add_bent.day) + i))
+            sch["B" + str(overall_index + 1)] = "Bentonite Addition of " + current["B" + str(i + 2)].value
+            overall_index += 1
+
+        # Generate Bentonite Addition
+        self.rack_bent = self.sub_date(23)
+        for i in range(temp_var):
+            sch["A" + str(overall_index + 1)] = str(self.rack_bent.year) + "-" + str(self.rack_bent.month) + "-" + (str(int(self.rack_bent.day) + i))
+            sch["B" + str(overall_index + 1)] = "Bentonite Racking of " + current["B" + str(i + 2)].value
+            overall_index += 1
+
+        # Generate rough filtering
+        self.rough_filter = self.sub_date(14)
+        for i in range(temp_var):
+            sch["A" + str(overall_index + 1)] = str(self.rough_filter.year) + "-" + str(self.rough_filter.month) + "-" + (str(int(self.rough_filter.day) + i))
+            sch["B" + str(overall_index + 1)] = "Rough Filtering of " + current["B" + str(i + 2)].value
+            overall_index += 1
+
+        # Generate sweetening
+        self.sweet = self.sub_date(8)
+        for i in range(temp_var):
+            sch["A" + str(overall_index + 1)] = str(self.sweet.year) + "-" + str(self.sweet.month) + "-" + (str(int(self.sweet.day)))
+            sch["B" + str(overall_index + 1)] = "Sweetening of " + current["B" + str(i + 2)].value
+            overall_index += 1
+
         # Generate Final filtering
         self.final_filter = self.sub_date(3)
         for i in range(temp_var):
