@@ -1,6 +1,9 @@
 # WineMaker
+### Introduction
+Hello. My name is Stephen Layton and this is the repository for my WineMaker software. This was created for my ECE 1895 Junior Design class.
+Please direct any questions to: stl82@pitt.edu
 ### Overview
-This is a software for winemakers to track wines properties and track predicted schedule.
+This is a software for winemakers to track wines properties and track predicted schedule. This program will allow you to store different wines and the  information that goes along with them including name, tank number, volume(L), sugar, pH, stage, and SO2. Using this inputed information, the program can run various calculations such as potassium metabisulfite additions based on volume and desired SO2 ppm raised, yeast addition for fermentation, and basic unit conversions.
 
 
 ### Verification
