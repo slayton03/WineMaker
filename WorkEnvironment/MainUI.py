@@ -861,7 +861,7 @@ class App(customtkinter.CTk):
         self.con_current_den = customtkinter.CTkEntry(self.calctabs.tab("Conversions"))  # , text=current["F" + info_index].value)
         self.con_current_den.place(x=200, y=50)
 
-        self.con_ans_label = customtkinter.CTkLabel(self.calctabs.tab("Conversions"), text="Grams", font=customtkinter.CTkFont(size=20, weight="bold"))
+        self.con_ans_label = customtkinter.CTkLabel(self.calctabs.tab("Conversions"), text="Grams:", font=customtkinter.CTkFont(size=20, weight="bold"))
         self.con_ans_label.place(x=20, y=100)
         self.con_ans = customtkinter.CTkLabel(self.calctabs.tab("Conversions"), text=" ")
         self.con_ans.place(x=200, y=100)
@@ -901,9 +901,58 @@ class App(customtkinter.CTk):
         self.calc_screen()
 
     def calc_so2(self):
+        self.so2_error_vol = customtkinter.CTkLabel(self.calctabs.tab("SO2"), text=" ")
+        self.so2_error_so2 = customtkinter.CTkLabel(self.calctabs.tab("SO2"), text=" ")
+        self.so2_error_so2.place(x=380, y=150)
+        self.so2_error_vol.place(x=380, y=100)
+        try:
+            float(self.s02_current_vol.get())
+        except ValueError:
+            # Error message
+            self.so2_error_vol.configure(text="Error, must input a number")
+            return
+
+        try:
+            float(self.s02_added_s02.get())
+        except ValueError:
+            # Error message
+            self.so2_error_so2.configure(text="Error, must input a number")
+            return
+
         self.s02_current_result.configure(text=str(self.round_half_up(((float(self.s02_current_vol.get())/100))*((float(self.s02_added_s02.get())/10)*2)))+ " g")
+        self.so2_error_so2.configure(text="                                                                   ")
+        self.so2_error_vol.configure(text="                                                                   ")
+
 
     def calc_ferm(self):
+
+        self.ferm_error_vol = customtkinter.CTkLabel(self.calctabs.tab("Fermentation"), text=" ")
+        self.ferm_error_brix = customtkinter.CTkLabel(self.calctabs.tab("Fermentation"), text=" ")
+        self.ferm_error_alc = customtkinter.CTkLabel(self.calctabs.tab("Fermentation"), text=" ")
+        self.ferm_error_vol.place(x=20, y=400)
+        self.ferm_error_brix.place(x=20, y=400)
+        self.ferm_error_alc.place(x=20, y=400)
+        try:
+            float(self.ferm_current_vol.get())
+        except ValueError:
+            # Error message
+            self.ferm_error_vol.configure(text="Error, must input a number in Volume")
+            return
+
+        try:
+            float(self.ferm_added_brix.get())
+        except ValueError:
+            # Error message
+            self.ferm_error_brix.configure(text="Error, must input a number in Brix")
+            return
+
+        try:
+            float(self.ferm_des_alc.get())
+        except ValueError:
+            # Error message
+            self.ferm_error_alc.configure(text="Error, must input a number in Alcohol")
+            return
+
         cur_alc = float(self.ferm_added_brix.get())*.58
         self.alc_current_result.configure(text=str(self.round_half_up(cur_alc,4)) + " %")
         vol_gal = float(self.ferm_current_vol.get())*.26417205
@@ -920,12 +969,36 @@ class App(customtkinter.CTk):
         sugar_kg = ((float(self.ferm_des_alc.get())-cur_alc)*1.8)*(float(self.ferm_current_vol.get())/100)
         self.sugar_lb_current_result.configure(text=str(self.round_half_up(((sugar_kg/453.59237)*1000), 4)) + " lbs")
         self.sugar_g_current_result.configure(text=str(self.round_half_up((sugar_kg), 4)) + " Kg")
+        self.ferm_error_vol.configure(text="                                                                           ")
 
     def calc_con(self):
+
+        self.con_error_vol = customtkinter.CTkLabel(self.calctabs.tab("Conversions"), text=" ")
+        self.con_error_den = customtkinter.CTkLabel(self.calctabs.tab("Conversions"), text=" ")
+        self.con_error_vol.place(x=20, y=300)
+        self.con_error_den.place(x=20, y=300)
+        try:
+            float(self.con_current_vol.get())
+        except ValueError:
+            # Error message
+            self.con_error_vol.configure(text="Error, must input a number")
+            return
+
+        try:
+            float(self.con_current_den.get())
+        except ValueError:
+            # Error message
+            self.con_error_den.configure(text="Error, must input a number")
+            return
+
+
         if(self.con_drop.get() == "g/hL"):
             self.con_ans.configure(text=str(self.round_half_up((float(self.con_current_vol.get())/100)*float(self.con_current_den.get()))) + " g")
         elif(self.con_drop.get() == "g/L"):
             self.con_ans.configure(text=str(self.round_half_up(float(self.con_current_vol.get()) * float(self.con_current_den.get()))) + " g")
+
+        self.con_error_den.configure(text="                                                              ")
+
     # def mult(self):
     #     self.an_label.configure(text=(str(int(self.entry1.get()) * int(self.entry2.get()))))
 
