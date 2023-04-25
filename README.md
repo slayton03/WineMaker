@@ -1,6 +1,25 @@
 # WineMaker
-### Introduction
+### Overview
 This is a software for winemakers to track wines properties and track predicted schedule.
+
+
+### Verification
+
+
+
+### Implementation
+
+
+
+### Testing
+
+
+
+### Conclusion
+
+
+
+### Future ideas
 
 
 Personal writing reference, delete later
