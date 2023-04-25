@@ -19,7 +19,19 @@ As stated earlier, this program uses the customTKinter library and while that wa
 
 ### Implementation
 
+#### Main Screen Example Images
 
+##### Home screen:
+![image](https://github.com/slayton03/WineMaker/blob/main/WineMaker%20images/winemaker_home.png)
+
+##### Wines screen:
+![image](https://github.com/slayton03/WineMaker/blob/main/WineMaker%20images/winemaker_wines.png)
+
+##### Calculations screen:
+![image](https://github.com/slayton03/WineMaker/blob/main/WineMaker%20images/winemaker_calc.png)
+
+##### Schedule screen:
+![image](https://github.com/slayton03/WineMaker/blob/main/WineMaker%20images/winemaker_sch.png)
 
 ### Testing
 
@@ -30,6 +42,8 @@ As stated earlier, this program uses the customTKinter library and while that wa
 
 
 ### Future ideas
+
+If future iterations of this program are done, there are a couple of things I would like to possibley change or add. First off, I would like to add more information that is stored in the wines data. I currently have name, tank number, volume(L), sugar, pH, stage, and SO2. In later iterations, I would like to add more information that is relevent to the wines, such as current alcohol.
 
 
 Personal writing reference, delete later
