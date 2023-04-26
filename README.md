@@ -50,15 +50,32 @@ This is the wine information screen. From here you can see all the information a
 This is the calculations screen. From here you can run various calculations including potassium metabisulfite additions based on volume and desired SO2 ppm raised, yeast addition for fermentation, and basic unit conversions. The volume section will automatically be filled in based on what wine the calculation is being done for, which can be changed with the dropdown menu at the top of the screen. The volume can also be changed manually if desired. Then you input all other fields and hit the calculate button and the program will run the calculation. Using the tabs up top you can change to a different set of calculations.
 
 ##### Schedule screen:
+![image](https://github.com/slayton03/WineMaker/blob/main/WineMaker%20images/winemaker_schgen.PNG)
 
-
+This is the schedule generation screen. This is the screen you see if you currently have no schedule made. From here you input your start date and desired end date and the program will generate a schedule outline for you that includes 1st racking, 2nd racking, bentonite addition, bentonite racking, rough filtration, sweetening, and final filtration for each wine. The next image will show what this looks like.
 
 ##### Generated Schedule:
 ![image](https://github.com/slayton03/WineMaker/blob/main/WineMaker%20images/winemaker_sch.png)
 
+This is what the generated schedule will look like. This shows some key items in making wine and gives suggested dates for when they shold be done. From here you can also generate a new schedule for possibly new dates or new wines but this will delete the old schedule.
+
+For this program, one of the most challenging things to accomplish was getting all the information to be stored an accessed correctly. I wanted to save all data in excel so that, if need be, the average user could just open the excel file and look at or change data as needed. This proved to be somewhat of a challenge since I have never done anything like that before. I used the library openpyxl to get functions for adding data, adjusting data, and deleting data in certian cells. While the functions made this fairly simple, it was still difficult ensure everything was where I wanted it and making sure that the data I accessed what the actual data I wanted. This was especially tough when accessing or storing data in loops. I had to make sure I had the correct starting index, the correct traversal direction, and the correct length of the loop otherwise it wouldn't work how I needed it to. Eventually through trial and error I figured out better how to work the library and get all the correct information I needed.
+
 ### Testing
 
+As stated before, this was an iterative proccess so testing occured while the program was being built. Below I will go through each section and describe what testing occured and at least on example of a bug that occured for each.
 
+#### Home Screen:
+
+To test the home screen, for the to-do list I would simply try to add new to-do tasks and then attempt to delete them.
+
+__To-do bug ex)__
+
+#### Wine Screen:
+
+#### Calculation Screen:
+
+#### Schedule Screen:
 
 ### Conclusion
 
