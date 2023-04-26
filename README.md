@@ -19,7 +19,9 @@ Since this project was a software design, I didn't really create a prototype but
 
 #### Commit Iterations
 
+Below is a picture of all the commits for this project. This shows that this program was created with an iterative process and verification was done piece by piece to ensure everything would work as intended.
 
+![image](https://github.com/slayton03/WineMaker/blob/main/WineMaker%20images/winemaker_commits.png)
 
 ### Implementation
 
