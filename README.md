@@ -40,12 +40,20 @@ This is the home screen. From here you can see a general overview of all your ta
 This is the wine screen. From here you can see all your current wines along with what tank they are in, their volume, the stage they are in, their pH, and their SO2 in parts per million. Hitting the + gives you the ability to create a new wine where you can input all the information for it and it will be saved in the program. Hitting the buttons with the three dots(...) sends you to the information screen where you can see all the wines information. This information screen will be shown next.
 
 ##### Wine Information screen:
+![image](https://github.com/slayton03/WineMaker/blob/main/WineMaker%20images/winemaker_info.PNG)
 
+This is the wine information screen. From here you can see all the information about the wine including name, tank number, volume(L), sugar, pH, stage, and SO2. The drop down bar allows you to change what wine is being looked at. Clicking the edit button will allow you to edit all the wines information or to just delete the wine entirely. 
 
 ##### Calculations screen:
 ![image](https://github.com/slayton03/WineMaker/blob/main/WineMaker%20images/winemaker_calc.png)
 
+This is the calculations screen. From here you can run various calculations including potassium metabisulfite additions based on volume and desired SO2 ppm raised, yeast addition for fermentation, and basic unit conversions. The volume section will automatically be filled in based on what wine the calculation is being done for, which can be changed with the dropdown menu at the top of the screen. The volume can also be changed manually if desired. Then you input all other fields and hit the calculate button and the program will run the calculation. Using the tabs up top you can change to a different set of calculations.
+
 ##### Schedule screen:
+
+
+
+##### Generated Schedule:
 ![image](https://github.com/slayton03/WineMaker/blob/main/WineMaker%20images/winemaker_sch.png)
 
 ### Testing
