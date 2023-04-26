@@ -25,13 +25,22 @@ Below is a picture of all the commits for this project. This shows that this pro
 
 ### Implementation
 
+As stated in the overview, this program is meant to help wine makers keep track of their wines by storing different wines and their properties. This program keeps track of different wine properties including name, tank number, volume(L), sugar, pH, stage, and SO2. The program uses these metrics to run various calculation such as potassium metabisulfite additions based on volume and desired SO2 ppm raised, yeast addition for fermentation, and basic unit conversions. Finally, the program is able to create a schedule for the wine maker to use to help them plan for what needs to be done with the wine. Below I will show pictures of each screen and what can be done from each.
+
 #### Main Screen Example Images
 
 ##### Home screen:
 ![image](https://github.com/slayton03/WineMaker/blob/main/WineMaker%20images/winemaker_home.png)
 
+This is the home screen. From here you can see a general overview of all your tanks(1-11) and what wine is in each one and  it's volume. The home screen also includes a simple to-do list where you can hit the + button to add any text you'd like and save it as a to-do task. When finished you can hit the done button and it will remove that item from the list. All new items are added from the bottom.
+
 ##### Wines screen:
 ![image](https://github.com/slayton03/WineMaker/blob/main/WineMaker%20images/winemaker_wines.png)
+
+This is the wine screen. From here you can see all your current wines along with what tank they are in, their volume, the stage they are in, their pH, and their SO2 in parts per million. Hitting the + gives you the ability to create a new wine where you can input all the information for it and it will be saved in the program. Hitting the buttons with the three dots(...) sends you to the information screen where you can see all the wines information. This information screen will be shown next.
+
+##### Wine Information screen:
+
 
 ##### Calculations screen:
 ![image](https://github.com/slayton03/WineMaker/blob/main/WineMaker%20images/winemaker_calc.png)
