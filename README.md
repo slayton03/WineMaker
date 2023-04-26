@@ -15,6 +15,10 @@ As stated earlier, this program uses the customTKinter library and while that wa
 
 ### Verification
 
+Since this project was a software design, I didn't really create a prototype but I did look into the customTKinter library to ensure it would do what I hoped it would do. I choose this library because it looked much nicer then a lot of other GUI libraries with a more modern feel. It also had all the widgets I wanted including labels, buttons, and drop down menus. I used an iterative proccess to design this program, designing one section at a time to ensure each section was able to be made. 
+
+#### Commit Iterations
+
 
 
 ### Implementation
