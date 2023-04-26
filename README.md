@@ -69,55 +69,35 @@ As stated before, this was an iterative proccess so testing occured while the pr
 
 To test the home screen, for the to-do list I would simply try to add new to-do tasks and then attempt to delete them.
 
-__To-do bug ex)__
+_To-do bug ex)_ When doing this, I had an issue where the loop to get the to-do tasks would try and access one extra cell that was blank. I later learned that this was because unlike all my other accessing loops up to this point, this data didn't have a header in the excel sheet so I was skipping the first cell adding and extra empty cell onto the end. Once I figured this out it was a simple fix of indexing
+
+To test the tanks I would simply make new wines and assign them to one of the tanks then check to see if the tank was now occupied.
+
+_Tanks bug ex)_ Similarly to the to-do bug, this one had an issue where all the tanks were assigned 1 higher then they should be. Also like the to-do the issue was I was indexing the loop starting at 0 while the tanks started at 1. This was also a simple indexing fix.
 
 #### Wine Screen:
 
+To test the wines I would create new wines and make sure everyhing worked ass intended and would delete wines to make sure everything that was supposed to be was deleted. I also edited each value in the wines to make sure everything changed like it should.
+
+_Wines bug ex)_ When inputing a letter into the tank value, the program wouldn't create the new wine until I put a number in. Once I finally did put a number in I saw that there were a bunch of half done new wines with the same name as the wine I just added. This was because no error was detected until after the wine name was already stored so it still added the wine name to the excel sheel but nothing else. To fix this I implemented error checking before anything gets added to ensure nothing got added before everything was good.
+
 #### Calculation Screen:
+
+To test the calculations, I inputed numbers to which I knew the correct answer to ensure the equations worked as intended.
+
+_Calculations bug ex)_ When getting the numbers from the entry boxes, I at first couldn't get the calculations to run because of some value errors. What I found out was happening was that the entry box only gets the values as strings. To fix this I had to convert the entries into float values, then run the calculations, then convert the number back to a string to set it as the label text.
 
 #### Schedule Screen:
 
+To test the scheduling, I would create schedules with various end and start dates to ensure the function was generating the correct schedule.
+
+_Scheduling bug ex)_ I realized vary quickily that adding and subtracting calendar dates wouldn't be as simple as just adding the days together. To accomplish adding and subtracting dates, I created specialized functions that knew how many days were in each month, accounting for leap years, and was able to produce a new date based on how many days you were trying to add or subtract.
+
 ### Conclusion
 
-
+I was able to make a program for wine makers that would store various wines and the data that goes along with them, run calculations based on the wines properties, and create a suggested schedule for wine makers to follow. Overall, I am extremly happy with how this project turned out, doing most of what I wanted it to do, and feel like I learned a lot from this experience. I learned a lot about making a stand alone program and how to format it to make it more user friendly. I also learned more about storing and accessing data and how to use that data to accomplish different tasks. I believe this project was a great success and look forward to doing similar things in the future.
 
 ### Future ideas
 
-If future iterations of this program are done, there are a couple of things I would like to possibley change or add. First off, I would like to add more information that is stored in the wines data. I currently have name, tank number, volume(L), sugar, pH, stage, and SO2. In later iterations, I would like to add more information that is relevent to the wines, such as current alcohol.
+If future iterations of this program are done, there are a couple of things I would like to possibley change or add. First off, I would like to add more information that is stored in the wines data. I currently have name, tank number, volume(L), sugar, pH, stage, and SO2. In later iterations, I would like to add more information that is relevent to the wines, such as current alcohol. I would also like to add more calculations. I would like to give the program more ability to be useful by adding more calculations that it can run such as how much bentonite should be added for cold stablization. Finally, I would like to update the scheduling. While I am happy with what I have now, the current scheduling is very dull and basic. I would like to add more points in the wine making proccess to be scheduled and make the overall scheduling page look nicer instaed of just a list of dates.
 
-
-Personal writing reference, delete later
-# Heading level 1
-## Heading level 2
-### Heading level 3
-#### Heading level 4
-##### Heading level 5
-###### Heading level 6
-*one star on each side*
-_This text is also italic_
-**two stars on each side**
-__This text is also bold__
-***This text is italic and bold.***
-___This text is also italic and bold.___
-~~strikethrough~~
-[This text links to gfg](https://write.geeksforgeeks.org/).
-
--Just add a dash first and then write a text.
-
--If you add another dash in the following line, you will have another item in the list.
-    - If you add four spaces or use a tab key, you will create an indented list.
-        - If you need sert an indenta list within an intended one, just press a tab key again.
-
-Sometimes you want bullet points:
-
-*Start a line with a star 
-*Profit!
-
-1. Just type a number follow by a dot.
-2. If you want to add a second item, just type in another number followed by a dot.
-1. If you make a mistake when typing numbers, fear not, Markdown will correct for you. 
-    1. If you press a tab key or type four spaces, you will get an indented list and the numbering will start from scratch.
-        1. If you want to insert an indented numbered list within an existing indented numbered one, just press the tab key again. 
-            -If need be, you can also add an indented unordered list within an indented numbered one, by pressing a tab key and typing adash.
-            
-![image](https://media.geeksforgeeks.org/wp-content/cdn-uploads/20210914130327/100-Days-of-Code-with-GFG-Get-Committed-to-a-Challenge.png)
