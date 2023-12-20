@@ -353,6 +353,7 @@ class App(customtkinter.CTk):
 
         self.name_entry = customtkinter.CTkEntry(self.add_wine_frame, placeholder_text="Name")
         self.name_entry.place(x=120, y=100)
+        self.name_entry.insert(0,"New")
 
         # Input tank number
         self.new_tank = customtkinter.CTkLabel(self.add_wine_frame, text="Tank:",
@@ -361,6 +362,7 @@ class App(customtkinter.CTk):
 
         self.tank_entry = customtkinter.CTkEntry(self.add_wine_frame, placeholder_text="Tank Number")
         self.tank_entry.place(x=120, y=150)
+        self.tank_entry.insert(0,"0")
 
         # Input Volume
         self.new_vol = customtkinter.CTkLabel(self.add_wine_frame, text="Volume:",
@@ -369,6 +371,7 @@ class App(customtkinter.CTk):
 
         self.vol_entry = customtkinter.CTkEntry(self.add_wine_frame, placeholder_text="Volume")
         self.vol_entry.place(x=120, y=200)
+        self.vol_entry.insert(0,"0")
 
         self.vol_l_label = customtkinter.CTkLabel(self.add_wine_frame, text=" L", font=customtkinter.CTkFont(size=20, weight="bold"))
         self.vol_l_label.place(x=270, y=200)
@@ -380,6 +383,7 @@ class App(customtkinter.CTk):
 
         self.sugar_entry = customtkinter.CTkEntry(self.add_wine_frame, placeholder_text="Sugar")
         self.sugar_entry.place(x=120, y=250)
+        self.sugar_entry.insert(0,"0")
 
         self.sugar_label = customtkinter.CTkLabel(self.add_wine_frame, text=" g/L", font=customtkinter.CTkFont(size=20, weight="bold"))
         self.sugar_label.place(x=270, y=250)
@@ -391,6 +395,7 @@ class App(customtkinter.CTk):
 
         self.ph_entry = customtkinter.CTkEntry(self.add_wine_frame, placeholder_text="pH")
         self.ph_entry.place(x=120, y=300)
+        self.ph_entry.insert(0,"0")
         # Input Wine state
         self.new_state = customtkinter.CTkLabel(self.add_wine_frame, text="Stage:",
                                              font=customtkinter.CTkFont(size=20, weight="bold"))
@@ -398,6 +403,7 @@ class App(customtkinter.CTk):
 
         self.state_entry = customtkinter.CTkEntry(self.add_wine_frame, placeholder_text="State")
         self.state_entry.place(x=120, y=350)
+        self.state_entry.insert(0,"New")
         # Input Wine SO2
         self.new_so2 = customtkinter.CTkLabel(self.add_wine_frame, text="SO2:",
                                              font=customtkinter.CTkFont(size=20, weight="bold"))
@@ -405,6 +411,7 @@ class App(customtkinter.CTk):
 
         self.so2_entry = customtkinter.CTkEntry(self.add_wine_frame, placeholder_text="SO2")
         self.so2_entry.place(x=120, y=400)
+        self.so2_entry.insert(0,"0")
 
         self.so2_ppm_label = customtkinter.CTkLabel(self.add_wine_frame, text=" ppm", font=customtkinter.CTkFont(size=20, weight="bold"))
         self.so2_ppm_label.place(x=270, y=400)
@@ -594,6 +601,13 @@ class App(customtkinter.CTk):
             # Error message
             self.error_tank = customtkinter.CTkLabel(self.add_wine_frame, text="Error, must input a number")
             self.error_tank.place(x=350, y=150)
+
+        try:
+            int(self.name_entry.get())
+        except ValueError:
+            # Error message
+            self.error_name = customtkinter.CTkLabel(self.add_wine_frame, text="Error, must input a name")
+            self.error_name.place(x=350, y=100)
             return
 
         current["A" + str(ind)] = ind-1
