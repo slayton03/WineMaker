@@ -603,11 +603,43 @@ class App(customtkinter.CTk):
             self.error_tank.place(x=350, y=150)
 
         try:
-            int(self.name_entry.get())
+            self.name_entry.get()
         except ValueError:
             # Error message
             self.error_name = customtkinter.CTkLabel(self.add_wine_frame, text="Error, must input a name")
             self.error_name.place(x=350, y=100)
+            return
+
+        try:
+            int(self.sugar_entry.get())
+        except ValueError:
+            # Error message
+            self.error_sugar = customtkinter.CTkLabel(self.add_wine_frame, text="Error, must input a number")
+            self.error_sugar.place(x=350, y=250)
+            return
+
+        try:
+            int(self.ph_entry.get())
+        except ValueError:
+            # Error message
+            self.error_ph = customtkinter.CTkLabel(self.add_wine_frame, text="Error, must input a number")
+            self.error_ph.place(x=350, y=300)
+            return
+
+        try:
+            self.state_entry.get()
+        except ValueError:
+            # Error message
+            self.error_state = customtkinter.CTkLabel(self.add_wine_frame, text="Error, must input a state")
+            self.error_state.place(x=350, y=350)
+            return
+
+        try:
+            int(self.so2_entry.get())
+        except ValueError:
+            # Error message
+            self.error_so2 = customtkinter.CTkLabel(self.add_wine_frame, text="Error, must input a number")
+            self.error_so2.place(x=350, y=400)
             return
 
         current["A" + str(ind)] = ind-1
