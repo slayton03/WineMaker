@@ -14,6 +14,8 @@ CustomTKinter library GitHub: [CustomTKinter](https://github.com/TomSchimansky/C
 
 This should be all you need to do. The program should run as intended and nothing more should need to be done. You can right click on the application to add a shortcut to your home screen to have it readily avalible.
 
+If looking for main python file, it is located in WorkEnvironment folder and is named MainUI.py
+
 ### Overview
 This is a software for winemakers to track the properties of wines and create a suggested schedule. This program will allow you to store different wines and the  information that goes along with them including name, tank number, volume(L), sugar, pH, stage, and SO2. Using this inputed information, the program can run various calculations such as potassium metabisulfite additions based on volume and desired SO2 ppm raised, yeast addition for fermentation, and basic unit conversions. Also, given a start date and an anticipated end date, the program will genrate a suggusted schedule to use including 1st racking, 2nd racking, bentonite addition, bentonite racking, rough filtration, sweetening, and final filtration. All data is stored in an excel sheet using the openpyxl library to create an excel file and store, adjust, and delete data in given cells. This is done so that users have easy access to all data in case of program errors.
 
